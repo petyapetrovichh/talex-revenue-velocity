@@ -9,9 +9,9 @@ RV.buildShots = () => {
   const P = (x, y) => ({ x: x * W, y: y * H });
   // print looks
   const LK = {
-    night: { mode: 'ht', ht: 0.42, cell: 6, grade: [1.12, 1.16, 1.3, 0], grain: 0.07, vig: 0.45 },
-    hall: { mode: 'ht', ht: 0.5, cell: 7, grade: [1.15, 1.2, 1.35, -0.2], grain: 0.07, vig: 0.4 },
-    warm: { mode: 'ht', ht: 0.48, cell: 7, grade: [1.08, 1.14, 1.35, 0.7], grain: 0.06, vig: 0.4 },
+    night: { mode: 'ht', ht: 0.42, cell: 6, grade: [1.12, 1.16, 1.3, 0], grain: 0.05, vig: 0.45 },
+    hall: { mode: 'ht', ht: 0.5, cell: 7, grade: [1.15, 1.2, 1.35, -0.2], grain: 0.05, vig: 0.4 },
+    warm: { mode: 'ht', ht: 0.48, cell: 7, grade: [1.08, 1.14, 1.35, 0.7], grain: 0.045, vig: 0.4 },
     day: { mode: 'ht', ht: 0.34, cell: 5, grade: [1.04, 1.1, 1.2, 0.15], grain: 0.05, vig: 0.2 },
     paper: { mode: 'ht', ht: 0.3, cell: 5, grade: [1.03, 1.06, 1.1, 0.25], grain: 0.045, vig: 0.12 },
     clayDither: { mode: 'dither', ht: 0.92, cell: 4, tint: C.clay, ink: C.ink, grade: [1.1, 1.3, 1, 0], grain: 0.04, vig: 0.1 },
@@ -128,7 +128,7 @@ RV.buildShots = () => {
       KIN.coverline(x, 'v2', t, { x: 60, y: 210, size: 120, maxW: 980, lh: 1.0, upper: true, color: C.ink, hi: ['paid'], until: B(12.5) + 0.5 });
       G.quad(ctx, c, quadOf(m, [[0.22, 0.345], [0.785, 0.02], [0.785, 0.345], [0.22, 0.6]], 0.5), 8);
     },
-    draw(ctx, t) { sub(ctx, 'v2', t, { color: C.white, until: B(12.5) + 0.5 }); },
+    draw(ctx, t) { sub(ctx, 'v2', t, { bg: 'rgba(13,16,19,0.72)', color: C.white, until: B(12.5) + 0.5 }); },
   });
   S(12.5, 14, 'bb4', {
     tin: { type: 'whip', d: 0.28, dir: -1 }, look: LK.mono, cam: cam({ z0: 1.04, z1: 1.12, px0: 0.03, px1: -0.03 }), lookN: 1, lookName: 'AGI ERA',
@@ -142,7 +142,7 @@ RV.buildShots = () => {
       if (t > wt('v2', 'paid')) { x.fillStyle = C.clay; KIN.font(x, 120, 'cond'); x.fillText('STILL GET PAID.', 50, 470); }
       G.quad(ctx, c, quadOf(m, [[0.475, 0.09], [0.805, 0.325], [0.835, 0.635], [0.49, 0.465]], 0.5), 8);
     },
-    draw(ctx, t) { sub(ctx, 'v2', t, { color: C.white, until: B(13.5) }); },
+    draw(ctx, t) { sub(ctx, 'v2', t, { bg: 'rgba(13,16,19,0.72)', color: C.white, until: B(13.5) }); },
   });
   S(14, 16, 'signs', {
     tin: { type: 'flash', d: 0.2 }, look: LK.day, cam: cam({ z0: 1.03, z1: 1.1, y0: 0.01, y1: -0.01, px0: -0.03, px1: 0.03, focus: 0.7 }), cut: 0.62,
@@ -155,7 +155,7 @@ RV.buildShots = () => {
     },
     draw(ctx, t, m) {
       lookCard(ctx, t, 2, 'REVENUE SHARING', [['MODEL', 'SHARE'], ['NOT', 'SUBSCRIPTION'], ['FIT', 'EVERYONE']], wt('v3', 'two'), { y: 330 });
-      sub(ctx, 'v3', t, { color: C.ink, hi: ['revenue', 'sharing', 'trap'], until: B(16) + 0.2 });
+      sub(ctx, 'v3', t, { bg: 'rgba(241,239,233,0.9)', color: C.ink, hi: ['revenue', 'sharing', 'trap'], until: B(16) + 0.2 });
     },
   });
   S(16, 19, 'receipt', {
@@ -262,7 +262,7 @@ RV.buildShots = () => {
         G.panel(ctx, 1180, 530, 600, 300, 'ON-CHAIN BUYBACKS · DAILY', { status: 'VERIFIED' });
         G.bars(ctx, t, { x: 1210, y: 590, w: 540, h: 200, data: F.buyback, t0: tb, perBeat: 3 });
       }
-      sub(ctx, 'v8', t, { x: 110, y: 930, align: 'left', color: C.ink, hi: ['live', 'daily'], until: B(28.6) });
+      sub(ctx, 'v8', t, { x: 110, y: 930, align: 'left', bg: 'rgba(241,239,233,0.9)', color: C.ink, hi: ['live', 'daily'], until: B(28.6) });
     },
   });
 
@@ -423,7 +423,7 @@ RV.buildShots = () => {
       if (t > td) { G.mono(x, 26, true); x.fillText('→ A DASHBOARD', 40, 260); G.bars(x, t, { x: 40, y: 300, w: 500, h: 200, data: F.buyback, t0: td, perBeat: 4, color: C.ink, axis: C.ink, accent: C.paper }); }
       G.quad(ctx, c, quadOf(m, [[0.44, 0.25], [0.81, 0.24], [0.81, 0.8], [0.45, 0.81]], 0.6), 6);
     },
-    draw(ctx, t) { sub(ctx, 'b1', t, { x: 110, y: 930, align: 'left', color: C.ink, hi: ['dashboard'], until: B(53) }); },
+    draw(ctx, t) { sub(ctx, 'b1', t, { x: 110, y: 930, align: 'left', bg: 'rgba(241,239,233,0.9)', color: C.ink, hi: ['dashboard'], until: B(53) }); },
   });
   S(53, 56, 'tag', {
     tin: { type: 'flash', d: 0.2 }, look: LK.paper, cam: cam({ z0: 1.04, z1: 1.1, px0: 0.02, px1: -0.02, focus: 0.7 }), theme: 'light',
@@ -439,7 +439,7 @@ RV.buildShots = () => {
     },
     draw(ctx, t, m) {
       G.cv(ctx, m.face(), t, B(53) + 0.1, { label: 'LEAD · HOLDING PROOF', conf: 1, color: C.ink, tagBg: C.ink, tagFg: C.paper });
-      sub(ctx, 'b2', t, { x: 1810, y: 930, align: 'right', color: C.ink, hi: ['daily', 'real'], until: B(56) });
+      sub(ctx, 'b2', t, { x: 1810, y: 930, align: 'right', bg: 'rgba(241,239,233,0.9)', color: C.ink, hi: ['daily', 'real'], until: B(56) });
     },
   });
   S(56, 59, 'lie', {
@@ -449,7 +449,7 @@ RV.buildShots = () => {
       ctx.fillStyle = 'rgba(241,239,233,0.55)'; ctx.fillRect(0, 0, W, H);
       const tn = wt('b3', 'no');
       G.flap(ctx, 330, 330, 14, 'WAITING LIST:'.padEnd(14) + (F.waitingList + ' AHEAD').padEnd(14), 'THERE IS NO'.padEnd(14) + 'WAITING LIST.'.padEnd(14), t, tn, { cw: 80, ch: 116, gap: 6, spread: 0.3, hi: (i, c) => i >= 14 });
-      sub(ctx, 'b3', t, { color: C.ink, until: B(59) });
+      sub(ctx, 'b3', t, { bg: 'rgba(241,239,233,0.9)', color: C.ink, size: 52, until: B(59) });
     },
   });
 
@@ -482,7 +482,8 @@ RV.buildShots = () => {
     tin: { type: 'cross', d: 0.4 }, look: LK.paper, cam: cam({ z0: 1.06, z1: 1.14, r0: 0, r1: 0.05, bump: 0.004 }), theme: 'light', chrome: { level: 'min' },
     draw(ctx, t) {
       G.cv(ctx, [0.5, 0.22, 0.19, 0.44], t, T0('o3'), { label: 'SPARK', conf: 1, color: C.ink, tagBg: C.clay });
-      KIN.coverline(ctx, 'o3', t, { x: 110, y: 900, size: 110, color: C.ink, hi: ['claude'], until: B(66) });
+      ctx.fillStyle = 'rgba(241,239,233,0.9)'; if (t > T0('o3')) ctx.fillRect(90, 150, 760 * eout(inv(T0('o3'), T0('o3') + 0.2, t)), 150);
+      KIN.coverline(ctx, 'o3', t, { x: 120, y: 262, size: 110, color: C.ink, hi: ['claude'], until: B(66) });
     },
   });
   S(66, 70, 'walkaway', {

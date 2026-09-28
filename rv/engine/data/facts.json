@@ -1,0 +1,14 @@
+{
+  "_todo": "PLACEHOLDERS. Every number below is illustrative, not real TaleX/RoamFi data. Replace with verified figures before anything is published.",
+  "brand": "TALEX",
+  "product": "ROAMFI",
+  "bpm": "132",
+  "revenueShared": { "start": 1284000, "end": 4870000 },
+  "split": [["HOLDERS", "40%"], ["BUYBACK", "35%"], ["TREASURY", "25%"]],
+  "order": { "id": "#48213", "item": "ROAMFI eSIM · 10 GB", "price": "$12.00" },
+  "buyback": [0.22, 0.31, 0.28, 0.4, 0.37, 0.45, 0.52, 0.49, 0.6, 0.64, 0.7, 0.76, 0.83, 0.95],
+  "uptimeDays": 212,
+  "waitingList": "18,204",
+  "asked": "2026-03",
+  "ticker": ["AGI ERA", "UNIVERSAL HIGH INCOME", "REVENUE SHARING, NOT SUBSCRIPTIONS", "EVERY PURCHASE SPLITS BACK", "ON-CHAIN BUYBACKS · DAILY", "BURN: REAL", "SELLING LIVE", "THERE IS NO WAITING LIST", "MADE WITH CLAUDE"]
+}

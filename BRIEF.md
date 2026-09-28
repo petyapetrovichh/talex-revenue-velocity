@@ -20,10 +20,10 @@
 
 Лежат в GitHub-репозитории/ветке рядом с этим брифом (Пётр указал путь при запуске Claude Code) — читай оттуда, ничего не проси у Петра повторно:
 
-- `reference/README.md`, `direction-log.md`, `orchestration.md`, `prompts-suno.md`, `prompts-seedance.md`, `prompts-midjourney.md`, `how-escape-velocity-was-made.pdf` — полная методика оригинала
-- `reference/midjourney/` — Google Drive архив автора, midjourney-референсы персонажа, папки `ev-01`…`ev-17`
-- `reference/final-video.mp4` — финальное видео оригинала
-- `reference/audio/` — аудио-стемы/референсы оригинала
+- `prompts/README.md`, `direction-log.md`, `orchestration.md`, `prompts-suno.md`, `prompts-seedance.md`, `prompts-midjourney.md`, `how-escape-velocity-was-made.pdf` — полная методика оригинала
+- `midjourney/` — Google Drive архив автора, midjourney-референсы персонажа, папки `ev-01`…`ev-17`
+- `master-ev.mp4` — финальное видео оригинала
+- `audio/` — аудио-стемы/референсы оригинала (.wav/.mp3/.m4a)
 
 Возьми оттуда: **канон персонажа** (см. ниже), общую механику (2.5D параллакс по стиллам, кинетическая типографика на биты, halftone-фильтр, split-flap счётчик, CV-рамки, монтажные переходы) и структуру пайплайна (research→lyrics→storyboard→per-chapter animation→render).
 

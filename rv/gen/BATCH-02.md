@@ -48,67 +48,74 @@ Text frames: the model must spell the text exactly; if a letter is wrong, regene
 
 ---
 
-## Prompts
+## Prompts — v2 (after the G03 test)
 
-### G01 · robotaxi face (prelude, no text) · +refs
-```
-Cinematic 35mm film still, 16:9. Close-up portrait of the woman from the reference images, a young Caucasian American woman with pale skin and light freckles, a glossy black blunt jaw-length bob with heavy bangs and one clay-orange streak through the bangs, a small flat clay-orange eight-pointed star hair clip, a thin headset microphone, a white cropped puff-sleeve shirt with a black harness strap, sitting in the back seat of a driverless robotaxi at night, looking straight into the camera, deadpan, lips closed. A red light from outside falls across one side of her face, passing city lights blur in the dark window behind her, dark leather seat, shallow depth of field. Blue-black and steel blue, the red light the only warm note, fine silver-gelatin grain. Keep her face, hair and hair clip exactly as in the reference images. No text, no letters, no logos, no watermark.
-```
+Lesson from G03: generating a scene from scratch with 4 photos of her attached makes the model paste those photos
+into the picture and redraw the set. So **every frame with text is an EDIT of the author's plate**: attach ONE image
+(the plate), ask only to add the text, keep everything else. Only G01, G02, G08 are generated from scratch.
 
-### G02 · robotaxi arrives on the catwalk (prelude, no text, no heroine)
-```
-Cinematic 35mm film still, 16:9. A white driverless robotaxi with a small spinning roof sensor stopped at the far end of a long wet concrete catwalk inside a colossal dark server hall, headlights on, its rear door swinging open, a silhouetted crowd holding glowing laptops on both sides of the runway, fog, reflections on the wet floor, one small red lamp high on the wall. Blue-black and steel blue, the red lamp the only warm note, fine silver-gelatin grain. No text, no letters, no logos, no watermark.
-```
+### EDIT frames — attach only the listed plate, nothing else
 
-### G03 · "This is not the future." · +refs
+**E03 · "NOT THE FUTURE." on the screen** — attach `refs/comp-G03-screen.jpg`
 ```
-Cinematic 35mm film still, 16:9. The woman from the reference images stands at the end of a wet catwalk in a vast dark data hall, full length, facing the camera, deadpan: a young Caucasian American woman with a glossy black blunt bob with one clay-orange streak, a small clay-orange star hair clip, a thin headset microphone, a white cropped puff-sleeve shirt, a black pleated skirt on a harness belt with a hanging white garment tag, black knee boots. Behind her, a huge glowing white LED screen spans the back wall and shows, in giant bold black condensed sans-serif capitals, exactly the words: "NOT THE FUTURE." Silhouetted audience with laptops on both sides, fog, one small red lamp. Blue-black and steel blue, fine silver-gelatin grain. Keep her face, hair and outfit exactly as in the reference images. The only text in the image is "NOT THE FUTURE." No logos, no watermark.
+Edit this image. On the large blank white screen behind the woman, display the words "NOT THE FUTURE." in giant bold black condensed sans-serif capitals, centred on the screen, lit like an LED screen. Her head stays in front of the screen and may hide part of the letters, like a real screen behind her. The screen shows only these words on white: no photos, no other text. Keep the woman, her face, pose and outfit, the audience, the fog, the light and the colours exactly unchanged.
 ```
 
-### G04 · billboard, Musk / universal income · +refs
+**E04 · billboard UNIVERSAL HIGH INCOME** — done (`in/G04-billboard-uhi.jpg`).
+
+**E05 · signs WAIT FOR MACHINES / INCOME NOW** — attach `refs/comp-G05-G11-freeway-signs.jpg`
 ```
-Cinematic 35mm film still, 16:9. Dawn on a foggy empty eight-lane freeway. A huge billboard on a steel pole fills the upper half of the frame, printed in bold black condensed sans-serif capitals on white, exactly: "UNIVERSAL HIGH INCOME". Standing on the road in the lower right third, small in the frame, looking up at it: the woman from the reference images, a young Caucasian American woman with a glossy black blunt bob with one clay-orange streak, a white cropped puff-sleeve shirt, a black pleated skirt with a harness belt and a hanging white garment tag, black knee boots. Pale grey fog, soft cold light, one small red lamp on the billboard frame as the only warm note, fine silver-gelatin grain. Keep her face, hair and outfit as in the reference images. The only text in the image is "UNIVERSAL HIGH INCOME". No logos, no watermark.
+Edit this image. Turn the three blank overhead panels on the gantry into green highway signs with white highway lettering. Left panel: "WAIT FOR MACHINES" with a white arrow pointing down-left to an exit. Middle panel: "INCOME NOW" with a white arrow pointing straight up. Right panel: plain green, no text. Her head stays in front of the middle sign and may hide part of it. Keep the woman, her face, pose and outfit, the road, the fog, the light and the colours exactly unchanged. No other text.
 ```
 
-### G05 · freeway signs: don't wait for machines · +refs
+**E06 · lit billboard NO SUBSCRIPTIONS** — attach `refs/comp-G06-lit-billboard.jpg`
 ```
-Cinematic 35mm film still, 16:9. A foggy empty freeway at pale dawn under a steel gantry with two big green overhead road signs across the top of the frame. The left sign reads exactly "WAIT FOR MACHINES" with a white arrow pointing down-left to an exit. The right sign reads exactly "INCOME NOW" with a white arrow pointing straight up. White highway lettering. Below the signs, standing in the middle lane, three-quarter view, looking toward the camera: the woman from the reference images, a young Caucasian American woman with a glossy black blunt bob with one clay-orange streak, a white cropped puff-sleeve shirt, a black pleated skirt with a harness belt and a hanging white garment tag, black knee boots. Soft grey fog, cold light, fine silver-gelatin grain. Keep her face, hair and outfit as in the reference images. The only text is on the two signs. No logos, no watermark.
-```
-
-### G06 · lit billboard: no subscriptions, no ads
-```
-Cinematic 35mm film still, 16:9. Low angle at dusk: a lone lit billboard on a steel pole against a grey overcast sky, power lines crossing the frame. The billboard is bright white and printed in bold black condensed sans-serif capitals on two lines, exactly: "NO SUBSCRIPTIONS. NO ADS." and below it in clay-orange: "JUST THE SPLIT." Monochrome grey scene, the clay-orange line is the only colour, fine silver-gelatin grain. The only text in the image is on the billboard. No logos, no watermark.
+Edit this image. On the glowing white billboard, print in bold black condensed sans-serif capitals, following the billboard's perspective, two lines: "NO SUBSCRIPTIONS. NO ADS." and below it in clay-orange: "JUST THE SPLIT." Keep the billboard structure, the sky, the power lines, the light and the black-and-white look exactly unchanged. No other text.
 ```
 
-### G07 · orange woven label: pays it forward
+**E07 · orange label EVERY PURCHASE / PAYS IT FORWARD** — attach `refs/comp-G07-orange-label.jpg`
 ```
-Extreme macro photograph, 16:9. A clay-orange woven garment label lies on a stack of off-white canvas tags, lit by soft window light from the side, the coarse weave clearly visible. Woven into the label in black thread, bold condensed sans-serif capitals on two lines, exactly: "EVERY PURCHASE" / "PAYS IT FORWARD". Shallow depth of field, the edges of the stack out of focus, fine grain, high-fashion still life. The only text in the image is on the label. No logos, no watermark.
-```
-
-### G08 · departures board: eSIM, connected everywhere · +refs
-```
-Cinematic 35mm film still, 16:9. A vast empty airport terminal at night. A giant black split-flap departures board fills the upper half of the frame, white flap letters in four rows, exactly: "TOKYO     CONNECTED" / "LISBON    CONNECTED" / "DUBAI     CONNECTED" / "NEW YORK  CONNECTED". Below it the woman from the reference images walks past from left to right, full length, a small carry-on in hand: a young Caucasian American woman with a glossy black blunt bob with one clay-orange streak, a small clay-orange star hair clip, a thin headset microphone, a white cropped puff-sleeve shirt, a black pleated skirt with a harness belt and a hanging white garment tag, black knee boots. Polished floor reflections, cold white light, one small red lamp. Blue-black and steel blue, fine silver-gelatin grain. Keep her face, hair and outfit as in the reference images. The only text is on the board. No logos, no watermark.
+Edit this image. Weave into the clay-orange label, in black thread, bold condensed sans-serif capitals on two lines, following the label's angle and the texture of the weave: "EVERY PURCHASE" / "PAYS IT FORWARD". Keep the label, the stack of canvas tags, the light and the colours exactly unchanged. No other text.
 ```
 
-### G09 · eSIM card to the lens · +refs (+ attach `refs/ref-1-face.jpg` as the composition)
+**E09 · card eSIM** — attach `refs/comp-E09-E10-card.jpg`
 ```
-Photograph, 16:9, high-key. Medium close-up of the woman from the reference images holding a small white plastic card up toward the lens with one hand, the card sharp in the foreground, her face just behind it looking into the camera, deadpan: a young Caucasian American woman with pale skin and light freckles, a glossy black blunt bob with heavy bangs and one clay-orange streak, a small clay-orange eight-pointed star hair clip, a thin headset microphone, a white puff-sleeve shirt. The card is printed in bold black condensed sans-serif, exactly: "eSIM" and under it in small capitals "CONNECTED WHEREVER YOU ROAM". Plain pale grey paper background, soft light, fine grain. Keep her face, hair and hair clip exactly as in the reference images. The only text is on the card. No logos, no watermark.
-```
-
-### G10 · "ownership will find you" — card "OWNER" · +refs
-(same composition as G09 — do it in the same chat: "same image, but the card reads exactly: OWNER, and under it: 1 PIECE OF EVERY SALE")
-
-### G11 · freeway sign: road to AGI · +refs
-```
-Cinematic 35mm film still, 16:9. Wide shot of an empty foggy freeway at pale dawn, a single huge green overhead road sign on a steel gantry across the top of the frame, white highway lettering, exactly: "A G I" and below it "NEXT EXIT" with a white arrow pointing up-right. The woman from the reference images walks away from the camera down the middle lane toward the sign, small in the frame, full length: glossy black bob, white cropped puff-sleeve shirt, black pleated skirt with a harness belt and a hanging white garment tag, black knee boots. Soft grey fog, cold light, fine silver-gelatin grain. The only text is on the sign. No logos, no watermark.
+Edit this image. Print on the small white card in her hand, following the card's angle, in bold black condensed sans-serif: "eSIM" and under it in small capitals: "CONNECTED WHEREVER YOU ROAM". Keep the woman, her face, hair, hair clip, hand and pose, the background and the light exactly unchanged. No other text.
 ```
 
-### G12 · care label: own a piece
+**E10 · card OWNER** — same chat as E09:
 ```
-Extreme macro photograph, 16:9, high-key. A white woven care label stitched into the inside of a white cotton garment, soft shadowless light, the weave clearly visible. Printed on the label in black monospace capitals, exactly three lines: "BUY A PRODUCT." / "OWN A PIECE" / "OF WHAT IT EARNS." with small care symbols (wash tub, crossed-out iron) beneath. Monochrome off-white, fine grain, high-fashion still life. The only text in the image is on the label. No logos, no watermark.
+Same image, but the card reads exactly: "OWNER" and under it: "1 PIECE OF EVERY SALE". Change nothing else.
 ```
 
-### G13 · final title on the garment tag
+**E11 · sign A G I / NEXT EXIT** — attach `refs/comp-E11-freeway-gantry.jpg`
 ```
-Extreme macro photograph, 16:9. A white woven garment tag with a barcode hanging on a thin string from a black pleated coated-nylon skirt, dark background, soft side light, the weave and stitched hem clearly visible. Printed on the tag in bold black condensed sans-serif capitals, exactly: "REVENUE VELOCITY" and below it, small: "S/S 26". Blue-black background, fine silver-gelatin grain. The only text in the image is on the tag. No logos, no watermark.
+Edit this image. Turn the blank panels on the overhead gantry into one long green highway sign with white highway lettering: "A G I" in large letters and "NEXT EXIT" below it, with a white arrow pointing up-right. Her head stays in front of the sign and may hide part of it. Keep the woman, her face, pose and outfit, the road, the fog, the light and the colours exactly unchanged. No other text.
+```
+
+**E12 · care label BUY A PRODUCT / OWN A PIECE / OF WHAT IT EARNS** — attach `refs/comp-G12-care-label.jpg`
+```
+Edit this image. Print on the blank white care label, in black monospace capitals, following the label's angle and the weave, three lines: "BUY A PRODUCT." / "OWN A PIECE" / "OF WHAT IT EARNS." and below them two small care symbols: a wash tub and a crossed-out iron. Keep the label, the fabric, the stitching, the light and the colours exactly unchanged. No other text.
+```
+
+**E13 · final tag REVENUE VELOCITY** — attach `refs/comp-G13-tag.jpg`
+```
+Edit this image. Print on the white garment tag, above the barcode, following the tag's angle, in bold black condensed sans-serif capitals: "REVENUE VELOCITY" and below it, small: "S/S 26". Keep the tag, the barcode, the fabric, the light and the colours exactly unchanged. No other text.
+```
+
+### GENERATE frames (nothing like them in the archive)
+
+**G01 · her face in the robotaxi** — attach `refs/ref-1-face.jpg`, `refs/ref-2-face-close.jpg`, `refs/comp-G01-robotaxi-seat.jpg`
+```
+Create a new photograph, 16:9, cinematic 35mm film still. Close-up of the same woman as in the first two images (same face, freckles, black blunt bob with heavy bangs and one clay-orange streak, small clay-orange star hair clip, thin headset microphone, white cropped puff-sleeve shirt with a black harness strap), sitting in the back seat of a driverless robotaxi at night like in the third image, looking straight into the camera, deadpan, lips closed. A red light from outside falls across one side of her face, passing city lights blur in the dark window behind her. Blue-black and steel blue, the red light the only warm note, fine silver-gelatin grain, shallow depth of field. One single photograph: do not place the reference photos inside the picture, no collage, no screens. No text, no logos, no watermark.
+```
+
+**G02 · robotaxi at the head of the catwalk** — attach `refs/comp-G02-hall-laptops.jpg`, `refs/comp-G02-robotaxi.jpg`
+```
+Create a new photograph, 16:9, cinematic 35mm film still, in the same dark data hall as the first image: a white driverless robotaxi like the one in the second image, with a small spinning roof sensor, stopped at the far end of the long wet concrete catwalk, headlights on, its rear door swinging open, the silhouetted crowd with glowing laptops on both sides, fog, reflections on the wet floor, one small red lamp high on the wall. Blue-black and steel blue, fine silver-gelatin grain. One single photograph, no collage. No text, no logos, no watermark.
+```
+
+**G08 · airport departures board CONNECTED** — attach `refs/ref-3-full-body.jpg`, `refs/ref-1-face.jpg`
+```
+Create a new photograph, 16:9, cinematic 35mm film still. A vast empty airport terminal at night. A giant black split-flap departures board fills the upper half of the frame, white flap letters in four rows, exactly: "TOKYO     CONNECTED" / "LISBON    CONNECTED" / "DUBAI     CONNECTED" / "NEW YORK  CONNECTED". Below it, the same woman as in the reference images (same face, black blunt bob with one clay-orange streak, star hair clip, headset microphone, white cropped puff-sleeve shirt, black pleated skirt with harness belt and white garment tag, black knee boots) walks past from left to right, full length, a small carry-on in hand. Polished floor reflections, cold white light, one small red lamp, blue-black and steel blue, fine silver-gelatin grain. One single photograph: do not place the reference photos inside the picture, no collage, no screens with photos. The only text is on the board. No logos, no watermark.
 ```

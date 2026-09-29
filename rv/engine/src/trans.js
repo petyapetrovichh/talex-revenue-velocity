@@ -88,6 +88,65 @@ RV.TRANS = (() => {
       ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W(), H());
       ctx.save(); ctx.translate(W() / 2, H() / 2); ctx.rotate((o.dir ?? 1) * e * Math.PI * 0.5); ctx.scale(1 + e * 1.5, 1 + e * 1.5); ctx.drawImage(src, -W() / 2, -H() / 2, W(), H()); ctx.restore();
     },
+    // spark wipe: the 8-point hair-clip star grows from a point; B is revealed inside the rays
+    spark(ctx, A, B, k, o = {}) {
+      ctx.drawImage(A, 0, 0, W(), H());
+      const cx = (o.cx ?? 0.5) * W(), cy = (o.cy ?? 0.5) * H(), R = Math.hypot(W(), H()) * RV.ein(k, 2) * 1.1, wr = R * 0.22;
+      ctx.save(); ctx.beginPath();
+      for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 + (o.rot ?? 0.2); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(a - 0.13) * R, cy + Math.sin(a - 0.13) * R); ctx.lineTo(cx + Math.cos(a) * R * 1.05, cy + Math.sin(a) * R * 1.05); ctx.lineTo(cx + Math.cos(a + 0.13) * R, cy + Math.sin(a + 0.13) * R); ctx.closePath(); }
+      ctx.arc(cx, cy, wr, 0, 7); ctx.clip(); ctx.drawImage(B, 0, 0, W(), H());
+      ctx.restore(); if (k > 0.85) { ctx.globalAlpha = (k - 0.85) / 0.15; ctx.drawImage(B, 0, 0, W(), H()); ctx.globalAlpha = 1; }
+    },
+    // iris wipe: a circle opens from a point (a halo, an eye)
+    iris(ctx, A, B, k, o = {}) {
+      ctx.drawImage(A, 0, 0, W(), H());
+      const cx = (o.cx ?? 0.5) * W(), cy = (o.cy ?? 0.5) * H(), r = Math.hypot(W(), H()) * RV.eio(k);
+      ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.clip(); ctx.drawImage(B, 0, 0, W(), H()); ctx.restore();
+      ctx.strokeStyle = C.white; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.stroke();
+    },
+    // 3D card flip around the vertical axis
+    cardflip(ctx, A, B, k) {
+      ctx.fillStyle = '#0d1013'; ctx.fillRect(0, 0, W(), H());
+      const src = k < 0.5 ? A : B, s = Math.abs(Math.cos(Math.PI * k)), sk = Math.sin(Math.PI * k) * 0.12;
+      ctx.save(); ctx.translate(W() / 2, H() / 2); ctx.transform(s, (k < 0.5 ? 1 : -1) * sk, 0, 1, 0, 0); ctx.scale(0.92 + 0.08 * s, 0.92 + 0.08 * s); ctx.drawImage(src, -W() / 2, -H() / 2, W(), H()); ctx.restore();
+    },
+    // 1-bit threshold flash: A goes to hard black/white, cut, B comes back from 1-bit
+    threshold(ctx, A, B, k) {
+      const src = k < 0.5 ? A : B, amt = 1 - Math.abs(k - 0.5) * 2;
+      ctx.drawImage(src, 0, 0, W(), H());
+      ctx.save(); ctx.globalAlpha = amt; ctx.filter = 'grayscale(1) contrast(12) brightness(1.1)'; ctx.drawImage(src, 0, 0, W(), H()); ctx.restore();
+    },
+    // halftone-dot dissolve: B appears through a growing dot screen
+    dots(ctx, A, B, k, o = {}) {
+      ctx.drawImage(A, 0, 0, W(), H()); const cell = o.cell ?? 28, rmax = cell * 0.75, r = rmax * RV.eio(k);
+      ctx.save(); ctx.beginPath();
+      for (let y = 0; y < H() + cell; y += cell) for (let x = (Math.floor(y / cell) % 2) * cell / 2; x < W() + cell; x += cell) { ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, 7); }
+      ctx.clip(); ctx.drawImage(B, 0, 0, W(), H()); ctx.restore();
+    },
+    // page peel: A curls away from the bottom-right corner showing B underneath
+    peel(ctx, A, B, k) {
+      ctx.drawImage(B, 0, 0, W(), H()); const e = RV.eio(k), d = (W() + H()) * 1.1 * e;
+      ctx.save(); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W(), 0); ctx.lineTo(W(), Math.max(0, H() - d)); ctx.lineTo(Math.max(0, W() - d), H()); ctx.lineTo(0, H()); ctx.closePath(); ctx.clip(); ctx.drawImage(A, 0, 0, W(), H()); ctx.restore();
+      ctx.save(); ctx.fillStyle = C.paper; ctx.beginPath(); ctx.moveTo(W(), Math.max(0, H() - d)); ctx.lineTo(Math.max(0, W() - d), H()); ctx.lineTo(W() - d * 0.55, H() - d * 0.55); ctx.closePath(); ctx.fill(); ctx.restore();
+    },
+    // torn paper: a ragged cream edge sweeps across
+    torn(ctx, A, B, k) {
+      const x = RV.lerp(-0.1, 1.15, RV.eio(k)) * W(); ctx.drawImage(A, 0, 0, W(), H());
+      ctx.save(); ctx.beginPath(); ctx.moveTo(0, 0); for (let y = 0; y <= H(); y += 24) ctx.lineTo(x + (hash(y * 0.37) - 0.5) * 60, y); ctx.lineTo(0, H()); ctx.closePath(); ctx.clip(); ctx.drawImage(B, 0, 0, W(), H()); ctx.restore();
+      ctx.fillStyle = C.paper; ctx.beginPath(); for (let y = 0; y <= H(); y += 24) ctx.lineTo(x + (hash(y * 0.37) - 0.5) * 60, y); for (let y = H(); y >= 0; y -= 24) ctx.lineTo(x + 26 + (hash(y * 0.91) - 0.5) * 40, y); ctx.closePath(); ctx.fill();
+    },
+    // vertical bars wipe: bars close over A on the beat, open on B
+    bars(ctx, A, B, k, o = {}) {
+      const n = o.n ?? 8, bw = W() / n; ctx.drawImage(k < 0.5 ? A : B, 0, 0, W(), H());
+      const c = k < 0.5 ? k * 2 : (1 - k) * 2; ctx.fillStyle = o.color ?? C.ink;
+      for (let i = 0; i < n; i++) { const d = clamp(c * 1.4 - (i % 2 ? 0.2 : 0)); ctx.fillRect(i * bw, 0, bw * d, H()); }
+    },
+    // dither band: a band of 1-bit dither sweeps down, the picture changes under it
+    ditherband(ctx, A, B, k) {
+      const y = RV.lerp(-0.2, 1.2, k) * H(), bh = H() * 0.22;
+      ctx.drawImage(A, 0, 0, W(), H()); ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W(), Math.max(0, y)); ctx.clip(); ctx.drawImage(B, 0, 0, W(), H()); ctx.restore();
+      ctx.fillStyle = C.ink; for (let yy = y - bh / 2; yy < y + bh / 2; yy += 6) for (let xx = 0; xx < W(); xx += 6) if (hash(xx * 0.13 + yy * 0.71 + Math.floor(k * 12)) > 0.5) ctx.fillRect(xx, yy, 6, 6);
+    },
     cross(ctx, A, B, k) { ctx.drawImage(A, 0, 0, W(), H()); ctx.globalAlpha = RV.smooth(k); ctx.drawImage(B, 0, 0, W(), H()); ctx.globalAlpha = 1; },
   };
   return { types };

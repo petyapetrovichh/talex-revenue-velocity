@@ -7,7 +7,7 @@ torch.set_num_threads(4)
 root = os.path.dirname(os.path.abspath(__file__)) + '/..'
 mid = 'IDEA-Research/grounding-dino-tiny'
 proc = AutoProcessor.from_pretrained(mid); model = AutoModelForZeroShotObjectDetection.from_pretrained(mid).eval()
-QUERY = 'a person. a face. a laptop. a billboard. a road sign. a car. a garment tag. a card. a screen. a hand.'
+QUERY = os.environ.get('Q', 'a person. a face. a laptop. a billboard. a road sign. a car. a garment tag. a card. a screen. a hand.')
 P = root + '/engine/assets/plates/'
 keys = sys.argv[1:] or [k for k in json.load(open(root + '/data/plates.json')) if not k.endswith('blank')]
 out_p = root + '/engine/data/objects.json'

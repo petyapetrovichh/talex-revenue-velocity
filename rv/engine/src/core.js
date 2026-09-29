@@ -25,6 +25,7 @@ RV.load = async () => {
   RV.T = await (await fetch('data/timeline.json')).json();
   RV.F = await (await fetch('data/facts.json')).json();
   RV.FACES = await (await fetch('data/faces.json')).json();
+  RV.OBJ = await (await fetch('data/objects.json')).json();
   const T = RV.T;
   RV.beats = T.beats.map(b => b.t);
   // storyboard bars: the draft grid, warped onto the real take when tools/align.py has run

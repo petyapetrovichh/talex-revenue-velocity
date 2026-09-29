@@ -11,6 +11,9 @@
     octx = out.getContext('2d');
     const g = document.getElementById('gl'); g.width = out.width; g.height = out.height; GL.init(g);
     RV.SHOTS = RV.buildShots();
+    // plates drawn as 2D thumbnails (contact sheets) load as plain images once
+    RV.THUMB = {};
+    await Promise.all((RV.THUMBS || []).map(c => c.plate).map(k => new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(RV.THUMB[k] = im); im.onerror = () => no(new Error('thumb ' + k)); im.src = `assets/plates/${k}.jpg`; })));
     return { shots: RV.SHOTS.length, duration: RV.DUR };
   };
   // plate coords -> frame coords under the shot's camera (inverse of the shader's plateUV)

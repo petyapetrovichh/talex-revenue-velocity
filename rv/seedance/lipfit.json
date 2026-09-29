@@ -1,0 +1,44 @@
+{
+ "RV-S01": {
+  "id": "RV-S01",
+  "src": "seedance/out/RV-S01_t2_h3max_480p.mp4",
+  "speed": 2.06,
+  "song_t0": 86.84,
+  "song_t1": 89.348,
+  "corr": 0.676,
+  "corr_unfitted": NaN,
+  "face_cover": 0.94,
+  "out": "seedance/fit/RV-S01_fit.mp4"
+ },
+ "RV-S03": {
+  "id": "RV-S03",
+  "src": "seedance/out/RV-S03_t2_h3max_480p.mp4",
+  "speed": 1.82,
+  "song_t0": 65.19,
+  "song_t1": 68.029,
+  "corr": 0.389,
+  "corr_unfitted": NaN,
+  "face_cover": 0.6,
+  "out": "seedance/fit/RV-S03_fit.mp4"
+ },
+ "RV-S04": {
+  "id": "RV-S04",
+  "src": "seedance/out/RV-S04_t2_h3max_480p.mp4",
+  "speed": 1.9,
+  "song_t0": 76.55,
+  "song_t1": 79.182,
+  "manual": true,
+  "note": "face not tracked at 480p; speed set by hand",
+  "out": "seedance/fit/RV-S04_fit.mp4"
+ },
+ "RV-S05": {
+  "id": "RV-S05",
+  "src": "seedance/out/RV-S05_t2_h3max_480p.mp4",
+  "speed": 1.0,
+  "song_t0": 68.849,
+  "song_t1": 73.849,
+  "manual": true,
+  "note": "face not tracked at 480p; speed set by hand",
+  "out": "seedance/fit/RV-S05_fit.mp4"
+ }
+}

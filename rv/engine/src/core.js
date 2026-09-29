@@ -60,4 +60,5 @@ RV.words = id => RV.lines[id].tokens;
 RV.lineT0 = id => RV.lines[id].tokens[0].t0;
 RV.lineT1 = id => { const k = RV.lines[id].tokens; return k[k.length - 1].t1; };
 // word start by display text (first match at or after index `from`)
-RV.wordT = (id, w, from = 0) => { const k = RV.lines[id].tokens; for (let i = from; i < k.length; i++) if (k[i].w.replace(/[^\w']/g, '').toLowerCase() === w.toLowerCase()) return k[i].t0; return RV.lineT0(id); };
+// time of word `w` in line `id`; `nth` picks the n-th occurrence counting from token index `nth` onward
+RV.wordT = (id, w, from = 0) => { const k = RV.lines[id].tokens; for (let i = from; i < k.length; i++) if (k[i].w.replace(/[^a-z0-9]/gi, '').toLowerCase() === w.toLowerCase()) return k[i].t0; console.error('wordT miss ' + id + ':' + w); return RV.lineT0(id); };

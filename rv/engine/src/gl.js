@@ -8,7 +8,8 @@ RV.GL = (() => {
   const FS = `#version 300 es
   precision highp float;
   in vec2 v; out vec4 o;
-  uniform sampler2D uImg, uDep;
+  uniform sampler2D uImg, uDep, uImg2, uMask2;
+  uniform vec3 uRev;          // enabled, reveal line (plate v), softness
   uniform vec2 uRes;          // output px
   uniform float uAsp, uImgAsp;
   uniform vec4 uCam;          // zoom, panX, panY, rot
@@ -40,7 +41,15 @@ RV.GL = (() => {
     c += vec3(0.04, 0.0, -0.04) * uGrade.w;
     return clamp(c, 0.0, 1.0);
   }
-  vec3 scene(vec2 s) { return grade(texture(uImg, para(plateUV(s))).rgb); }
+  vec3 src(vec2 uv) {
+    vec3 c = texture(uImg, uv).rgb;
+    if (uRev.x > 0.5) {
+      float m = texture(uMask2, uv).r * (1.0 - smoothstep(uRev.y - uRev.z, uRev.y + uRev.z, uv.y));
+      c = mix(c, texture(uImg2, uv).rgb, m);
+    }
+    return c;
+  }
+  vec3 scene(vec2 s) { return grade(src(para(plateUV(s)))); }
   float h(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233)) + uSeed) * 43758.5453); }
   // one halftone screen: dot area follows the ink amount sampled at the cell centre
   float screen(vec2 px, float ang, int ch) {
@@ -61,7 +70,7 @@ RV.GL = (() => {
   void main() {
     vec2 px = v * uRes;
     vec2 puv = para(plateUV(v));
-    vec3 base = grade(texture(uImg, puv).rgb);
+    vec3 base = grade(src(puv));
     vec3 col = base;
     if (uMode == 1) {
       float C = screen(px, 0.2618, 0), M = screen(px, 1.309, 1), Y = screen(px, 0.0, 2), K = screen(px, 0.7854, 3);
@@ -95,9 +104,9 @@ RV.GL = (() => {
     gl.useProgram(prog);
     const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    ['uImg', 'uDep', 'uRes', 'uAsp', 'uImgAsp', 'uCam', 'uPar', 'uMode', 'uHT', 'uCell', 'uGrain', 'uSeed', 'uVig', 'uFlip', 'uGrade', 'uTint', 'uInk', 'uMask', 'uFade']
+    ['uImg', 'uDep', 'uRes', 'uAsp', 'uImgAsp', 'uCam', 'uPar', 'uMode', 'uHT', 'uCell', 'uGrain', 'uSeed', 'uVig', 'uFlip', 'uGrade', 'uTint', 'uInk', 'uMask', 'uFade', 'uImg2', 'uMask2', 'uRev']
       .forEach(n => (U[n] = gl.getUniformLocation(prog, n)));
-    gl.uniform1i(U.uImg, 0); gl.uniform1i(U.uDep, 1);
+    gl.uniform1i(U.uImg, 0); gl.uniform1i(U.uDep, 1); gl.uniform1i(U.uImg2, 2); gl.uniform1i(U.uMask2, 3);
   }
   const img = src => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(new Error('load ' + src)); i.src = src; });
   function mk(im) {
@@ -106,6 +115,11 @@ RV.GL = (() => {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     return t;
+  }
+  const masks = new Map();
+  async function maskTex(key) {
+    if (!masks.has(key)) masks.set(key, mk(await img(`assets/plates/${key}.mask.png`)));
+    return masks.get(key);
   }
   async function plate(key) {
     if (cache.has(key)) { order = order.filter(k => k !== key); order.push(key); return cache.get(key); }
@@ -136,6 +150,15 @@ RV.GL = (() => {
     gl.uniform3f(U.uTint, ...hex(o.tint ?? RV.C.paper)); gl.uniform3f(U.uInk, ...hex(o.ink ?? RV.C.ink));
     gl.uniform2f(U.uMask, o.mask != null ? 1 : 0, o.mask ?? 0);
     gl.uniform1f(U.uFade, o.fade ?? 0);
+    // reveal: o.reveal = {key, y} — the twin plate `key` shows through its text mask above plate-v `y`
+    if (o.reveal) {
+      const q = await plate(o.reveal.key), mt = await maskTex(o.reveal.key);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, p.img);
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, p.dep);
+      gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, q.img);
+      gl.activeTexture(gl.TEXTURE3); gl.bindTexture(gl.TEXTURE_2D, mt);
+      gl.uniform3f(U.uRev, 1, o.reveal.y, o.reveal.soft ?? 0.015);
+    } else gl.uniform3f(U.uRev, 0, 0, 0);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     return c;
   }

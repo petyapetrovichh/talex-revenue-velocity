@@ -58,6 +58,36 @@ RV.TRANS = (() => {
     },
     // dip to black
     fade(ctx, A, B, k) { ctx.drawImage(k < 0.5 ? A : B, 0, 0, W(), H()); ctx.fillStyle = `rgba(0,0,0,${1 - Math.abs(k - 0.5) * 2})`; ctx.fillRect(0, 0, W(), H()); },
+    // RGB split glitch: channels of A and B offset, bands jump, cut at the middle
+    rgb(ctx, A, B, k, o = {}) {
+      const src = k < 0.5 ? A : B, amt = Math.sin(Math.PI * k) * (o.amt ?? 60);
+      ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W(), H());
+      ctx.globalCompositeOperation = 'lighter';
+      [['#f00', -amt], ['#0f0', 0], ['#00f', amt]].forEach(([c, dx]) => {
+        const [cv, x] = RV.GFX.scratch('rgb' + c, src.width, src.height); x.drawImage(src, 0, 0);
+        x.globalCompositeOperation = 'multiply'; x.fillStyle = c; x.fillRect(0, 0, cv.width, cv.height); x.globalCompositeOperation = 'source-over';
+        ctx.drawImage(cv, dx, 0, W(), H());
+      });
+      ctx.globalCompositeOperation = 'source-over';
+      const n = 7; for (let i = 0; i < n; i++) { if (hash(i + Math.floor(k * 9)) > 0.55) continue; const y = hash(i * 3.3 + Math.floor(k * 9)) * H(), h = 12 + hash(i) * 60; ctx.drawImage(src, 0, y * src.height / H(), src.width, h * src.height / H(), (hash(i + 7) - 0.5) * 140 * Math.sin(Math.PI * k), y, W(), h); }
+    },
+    // strobe: alternating white / black / frames around the cut
+    strobe(ctx, A, B, k) {
+      const f = Math.floor(k * 8); ctx.drawImage(k < 0.5 ? A : B, 0, 0, W(), H());
+      if (f % 2 === 0 && f > 1 && f < 7) { ctx.fillStyle = f % 4 === 0 ? '#fff' : '#000'; ctx.globalAlpha = 0.85; ctx.fillRect(0, 0, W(), H()); ctx.globalAlpha = 1; }
+    },
+    // mirror flip: A folds on the vertical axis, B unfolds
+    flip(ctx, A, B, k) {
+      const src = k < 0.5 ? A : B, s = Math.abs(Math.cos(Math.PI * k));
+      ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W(), H());
+      ctx.save(); ctx.translate(W() / 2, 0); ctx.scale(k < 0.5 ? s : -s, 1); ctx.drawImage(src, -W() / 2, 0, W(), H()); ctx.restore();
+    },
+    // spin: A rotates and scales out, B rotates in
+    spin(ctx, A, B, k, o = {}) {
+      const src = k < 0.5 ? A : B, e = k < 0.5 ? RV.ein(k * 2, 3) : 1 - RV.eout((k - 0.5) * 2, 3);
+      ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W(), H());
+      ctx.save(); ctx.translate(W() / 2, H() / 2); ctx.rotate((o.dir ?? 1) * e * Math.PI * 0.5); ctx.scale(1 + e * 1.5, 1 + e * 1.5); ctx.drawImage(src, -W() / 2, -H() / 2, W(), H()); ctx.restore();
+    },
     cross(ctx, A, B, k) { ctx.drawImage(A, 0, 0, W(), H()); ctx.globalAlpha = RV.smooth(k); ctx.drawImage(B, 0, 0, W(), H()); ctx.globalAlpha = 1; },
   };
   return { types };

@@ -6,8 +6,8 @@ RV.CHROME = (() => {
   // the through-line: revenue shared keeps counting up, faster from the chorus on
   function revenue(t) {
     const F = RV.F.revenueShared, p = RV.clamp(t / RV.DUR);
-    const ch = RV.T.sections.find(s => s.name === 'chorus');
-    const boost = RV.clamp((t - ch.t0) / (ch.t1 - ch.t0));
+    const c0 = RV.lineT0('c1'), c1 = RV.lineT1('c5b');
+    const boost = RV.clamp((t - c0) / (c1 - c0));
     const k = 0.55 * Math.pow(p, 1.3) + 0.45 * RV.smooth(boost) * p;
     return F.start + (F.end - F.start) * RV.clamp(k) + Math.floor(RV.beatPos(t)) * 137;
   }
@@ -29,7 +29,7 @@ RV.CHROME = (() => {
       ctx.fillStyle = C.clay; ctx.beginPath(); ctx.arc(W - m - 342, m + 20, 4 + 2 * RV.pulse(t, 10), 0, 7); ctx.fill(); ctx.fillStyle = fg;
       GFX.counter(ctx, W - m - 330, m + 34, revenue(t), { prefix: '$', cw: 22, ch: 32, gap: 3, bg: light ? C.ink : '#15191d', fg: C.paper, hi: (i, c) => c === '$' });
       // look counter
-      if (o.look) { GFX.mono(ctx, 13, true); const s = `LOOK ${String(o.look).padStart(2, '0')} / 04`; ctx.fillText(s, W - m - 330, m + 94); ctx.globalAlpha = a * 0.7; GFX.mono(ctx, 12); ctx.fillText(o.lookName ?? '', W - m - 330, m + 112); ctx.globalAlpha = a; }
+      if (o.look) { GFX.mono(ctx, 13, true); const s = `LOOK ${String(o.look).padStart(2, '0')} / 05`; ctx.fillText(s, W - m - 330, m + 94); ctx.globalAlpha = a * 0.7; GFX.mono(ctx, 12); ctx.fillText(o.lookName ?? '', W - m - 330, m + 112); ctx.globalAlpha = a; }
       // beat readout
       const bp = RV.beatPos(t), bi = Math.floor(bp), bar = Math.floor(bi / 4) + 1, beat = (bi % 4 + 4) % 4;
       GFX.mono(ctx, 12); ctx.fillText(`BAR ${String(Math.max(bar, 0)).padStart(3, '0')} · ${RV.F.bpm} BPM`, m + 18, H - m - 40);

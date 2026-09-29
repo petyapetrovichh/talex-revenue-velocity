@@ -1,0 +1,29 @@
+{
+ "_doc": "Tokens are [display, spoken]. spoken defaults to display. Sections: spoken lines are TTS placeholders until the Suno take; sung lines are laid on the beat grid.",
+ "lines": [
+  {"id":"i1","sec":"intro","kind":"spoken","t":[["Ladies."],["Gentlemen."],["Agents."]]},
+  {"id":"i2","sec":"intro","kind":"spoken","t":[["This"],["is"],["not"],["a"],["pitch"],["deck."]]},
+  {"id":"i3","sec":"intro","kind":"spoken","t":[["Prepare"],["to"],["profit."]]},
+  {"id":"v1","sec":"look1","kind":"spoken","t":[["Look"],["one."],["AGI","A G I"],["era."],["Everyone's"],["talking"],["UHI.","U H I."]]},
+  {"id":"v2","sec":"look1","kind":"spoken","t":[["Musk"],["said"],["it:"],["own"],["nothing,"],["still"],["get"],["paid."]]},
+  {"id":"v3","sec":"look2","kind":"spoken","t":[["Look"],["two."],["Revenue"],["sharing,"],["not"],["a"],["subscription"],["trap."]]},
+  {"id":"v4","sec":"look2","kind":"spoken","t":[["Every"],["purchase"],["splits"],["back."],["Cashflow,"],["tokenized."]]},
+  {"id":"v5","sec":"look3","kind":"spoken","t":[["Look"],["three."],["Months"],["ago,"],["we"],["asked"],["the"],["models."]]},
+  {"id":"v6","sec":"look3","kind":"spoken","t":[["ChatGPT.","Chat G P T."],["Gemini."],["Claude."],["Same"],["answer,"],["same"],["plan."]]},
+  {"id":"v7","sec":"look4","kind":"spoken","t":[["Look"],["four."],["We"],["didn't"],["just"],["talk."],["We"],["shipped"],["it."]]},
+  {"id":"v8","sec":"look4","kind":"spoken","t":[["Selling"],["live."],["On-chain"],["buybacks,"],["daily."]]},
+  {"id":"p1","sec":"pre","kind":"spoken","t":[["This"],["isn't"],["a"],["promise."],["It's"],["already"],["running."]]},
+  {"id":"p2","sec":"pre","kind":"spoken","t":[["Lock"],["in."]]},
+  {"id":"c1","sec":"chorus","kind":"sung","t":[["Feel"],["the"],["AGI,"],["feel"],["it"],["coming"],["fast"]]},
+  {"id":"c2","sec":"chorus","kind":"sung","t":[["Revenue"],["for"],["everyone,"],["built"],["to"],["last"]]},
+  {"id":"c3","sec":"chorus","kind":"sung","t":[["They"],["predicted"],["it,"],["we"],["made"],["it"],["real"]]},
+  {"id":"c4","sec":"chorus","kind":"sung","t":[["Lock"],["in,"],["baby"],["—"],["this"],["is"],["the"],["deal"]]},
+  {"id":"c5","sec":"chorus","kind":"sung","t":[["(It's"],["so"],["over?)"],["WE'RE"],["SO"],["BACK!"]]},
+  {"id":"b1","sec":"bridge","kind":"spoken","t":[["Not"],["a"],["vision."],["A"],["dashboard."]]},
+  {"id":"b2","sec":"bridge","kind":"spoken","t":[["Buybacks:"],["daily."],["Burn:"],["real."]]},
+  {"id":"b3","sec":"bridge","kind":"spoken","t":[["There"],["is"],["no"],["waiting"],["list."]]},
+  {"id":"o1","sec":"outro","kind":"spoken","t":[["Shell:"],["AI-proposed.","A I proposed."],["Lining:"],["human-built.","human built."]]},
+  {"id":"o2","sec":"outro","kind":"spoken","t":[["Wash"],["cold."],["Do"],["not"],["iron."],["Do"],["not"],["gatekeep."]]},
+  {"id":"o3","sec":"outro","kind":"spoken","t":[["Made"],["with"],["Claude."]]}
+ ]
+}

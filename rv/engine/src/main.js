@@ -34,7 +34,11 @@
     if (sh.plate) { await GL.draw(sh.plate, look); ctx.drawImage(GL.canvas, 0, 0, RV.W, RV.H); }
     else { ctx.fillStyle = sh.bg ?? RV.C.ink; ctx.fillRect(0, 0, RV.W, RV.H); }
     if (sh.back) { ctx.save(); sh.back(ctx, t, m); ctx.restore(); }
-    if (sh.plate && sh.cut != null) { await GL.draw(sh.plate, Object.assign({}, look, { mask: sh.cut })); ctx.drawImage(GL.canvas, 0, 0, RV.W, RV.H); }
+    if (sh.plate && sh.cut != null) {
+      await GL.draw(sh.plate, Object.assign({}, look, { mask: sh.cut }));
+      const [mc, mx] = GFX.scratch('herMask', out.width, out.height); mx.drawImage(GL.canvas, 0, 0); m.mask = mc;
+      if (sh.cutDraw !== false) ctx.drawImage(GL.canvas, 0, 0, RV.W, RV.H);
+    }
     if (sh.draw) { ctx.save(); sh.draw(ctx, t, m); ctx.restore(); }
     return cv;
   }

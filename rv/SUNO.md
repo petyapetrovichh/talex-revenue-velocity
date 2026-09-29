@@ -14,44 +14,52 @@ fashion show electroclash techno, 128 BPM, 4/4, dry analog kick, rolling acid ba
 rap, rock guitar, lo-fi, male lead vocal, mumbled vocals
 ```
 
-## Lyrics field
+## Lyrics field (v2, Petr's lyrics; acronyms spelled for Suno; "walk" echoes added like the original)
 
 ```
+[Instrumental intro - 8 bars, building, no vocals]
+
 [Intro - spoken, deadpan female voice, room tone]
 Ladies. Gentlemen. Agents.
-This is not a pitch deck. Prepare to profit.
+This is not the future. Prepare to walk.
+(walk... walk... walk... walk...)
 
 [Verse - spoken, deadpan]
-Look one. A G I era. Everyone's talking U H I.
-Musk said it: own nothing, still get paid.
-Look two. Revenue sharing, not a subscription trap.
-Every purchase splits back. Cashflow, tokenized.
-Look three. Months ago, we asked the models.
-Chat G P T. Gemini. Claude. Same answer, same plan.
-Look four. We didn't just talk. We shipped it.
-Selling live. On-chain buybacks, daily.
+Look one. Everyone's chasing A G I,
+Musk says: universal income, don't ask why.
+Look two. Income doesn't have to wait for machines,
+It starts the moment a product shares what it means.
+Look three. Not subscriptions, not ads, just revenue in the split,
+Every purchase pays it forward, simple as that, legit.
+Look four. Take E SIM, stay connected wherever you roam,
+Every time someone signs up, you get paid back home.
 
 [Pre-Chorus - spoken, strings swell]
-This isn't a promise. It's already running.
+This isn't charity. It's the new default.
 Lock in.
 
 [Chorus - sung, female vocal, trance lift]
 Feel the A G I, feel it coming fast
-Revenue for everyone, built to last
-They predicted it, we made it real
-Lock in, baby, this is the deal
-(It's so over?) WE'RE SO BACK!
+Products that pay you back, built to last
+Not a promise from the future, it's already real
+Lock in, baby, revenue is the deal
 (It's so over?) WE'RE SO BACK!
 
 [Bridge - spoken, kick and strings only]
-Not a vision. A dashboard.
-Buybacks: daily. Burn: real.
-There is no waiting list.
+Buy once, get paid on every sale behind you,
+Wealth building while you sleep, ownership will find you.
+The more people join, the more the numbers grow,
+That's the road to A G I, one product, then more.
+
+[Final Chorus - sung, key change up, euphoric]
+More products, more revenue, shared
+Everyone earning, this is the deal
+Feel the A G I, feel it coming fast
+This is how the future gets built
 
 [Outro - spoken, deadpan, music falls away]
-Shell: A I proposed. Lining: human built.
-Wash cold. Do not iron. Do not gatekeep.
-Made with Claude.
+Buy a product. Own a piece of what it earns,
+That's not the future waiting, that's the wheel that turns.
 
 [End]
 ```

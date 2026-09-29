@@ -33,7 +33,13 @@
     const [cv, ctx] = GFX.scratch(name, out.width, out.height); ctx.setTransform(S, 0, 0, S, 0, 0);
     const p = (t - sh.t0) / (sh.t1 - sh.t0), cam = sh.cam ? sh.cam(p, t) : {};
     const look = Object.assign({ seed: Math.floor(t * 30) % 97 }, sh.look || {}, cam);
-    const m = Object.assign(mapper(look), { p, cam: look, sh, face: (i = 0, d) => mapper(look).box(GFX.face(sh.plate, i), d) });
+    // a video plate plays in song time: clip time = (t - vt0) * vspeed, or the shot's own vt(t)
+    const V = sh.plate && RV.VID[sh.plate];
+    if (V) { const ct = sh.vt ? sh.vt(t) : (t - (sh.vt0 ?? V.song_t0 ?? sh.t0)) * (sh.vspeed ?? 1); look.vframe = Math.max(0, Math.min(V.n - 1, Math.floor(ct * V.fps))); look.px = 0; look.py = 0; }
+    const mp = mapper(look);
+    const m = Object.assign(mp, { p, cam: look, sh, video: !!V,
+      face: (i = 0, d) => V ? mp.box(V.faces[look.vframe], 0.5) : mp.box(GFX.face(sh.plate, i), d),
+      body: () => V ? mp.box((V.bodies || [])[look.vframe], 0.5) : null });
     if (sh.plate) { await GL.draw(sh.plate, look); ctx.drawImage(GL.canvas, 0, 0, RV.W, RV.H); }
     else { ctx.fillStyle = sh.bg ?? RV.C.ink; ctx.fillRect(0, 0, RV.W, RV.H); }
     if (sh.back) { ctx.save(); sh.back(ctx, t, m); ctx.restore(); }
@@ -63,6 +69,7 @@
     if (!done && nxt) done = await tryT(cur, nxt);
     if (!done) { const a = await shot(cur, t, 'A'); octx.drawImage(a, 0, 0); }
     octx.setTransform(S, 0, 0, S, 0, 0);
+    if (cur.lyrOff !== true) RV.LYR.draw(octx, t, cur);   // the lyric layer sits over the picture, under the chrome
     const ch = cur.chrome ?? {}; CHROME.draw(octx, t, Object.assign({ theme: cur.theme, look: cur.lookN, lookName: cur.lookName }, ch));
     // global fade in/out
     const fi = 1 - RV.inv(0, 0.5, t), fo = RV.inv(RV.DUR - 2.2, RV.DUR - 0.2, t);

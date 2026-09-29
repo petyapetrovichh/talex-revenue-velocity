@@ -79,7 +79,6 @@ RV.DEV = (() => {
   function hit(ctx, s, x, y, size, t, t0, o = {}) {
     if (t < t0 || (o.t1 && t > o.t1)) return;
     KIN.font(ctx, size, o.fam ?? 'cond'); const w = ctx.measureText(s).width, X = o.align === 'center' ? x - w / 2 : o.align === 'right' ? x - w : x;
-    if (t < t0 + 2 / FPS) { ctx.fillStyle = C.clay; const p = size * 0.15; ctx.fillRect(X - p, y - size * 0.82 - p, w + 2 * p, size * 0.95 + 2 * p); }
     ctx.fillStyle = o.color ?? C.white; ctx.fillText(s, X, y);
     return w;
   }
@@ -215,5 +214,59 @@ RV.DEV = (() => {
       ctx.save(); ctx.globalAlpha = k; ctx.translate((1 - k) * 30, 0); ctx.fillStyle = i === items.filter(x => t >= x.t).length - 1 ? C.clay : C.paper; ctx.fillRect(o.x ?? 1480, y, 320, 54);
       ctx.fillStyle = C.ink; KIN.font(ctx, 28, 'cond'); ctx.fillText(it.s, (o.x ?? 1480) + 14, y + 36); mono(ctx, 10); ctx.fillText(it.sub ?? '', (o.x ?? 1480) + 200, y + 34); ctx.restore(); });
   }
-  return { obj, box, swarm, lookCard, hit, mast, cover, subChip, fig, flapCard, iris, terminal, contact, pulse, scan, led, callout, stack, typed };
+
+  // ---- outro: the revenue-sharing feed. Every purchase in life shares a slice back; the feed accelerates to a blur.
+  const ITEMS = [['COFFEE', 'Oat latte', 4.8], ['CLOTHES', 'Denim jacket', 89], ['eSIM', 'eSIM · 10 GB · roaming', 12], ['INTERNET', 'Home fiber · 1 month', 39],
+    ['RENT', 'Rent · October', 1450], ['PHONE BILL', 'Phone bill', 29], ['NEW PHONE', 'New phone', 999], ['COSMETICS', 'Lip serum', 24],
+    ['GROCERIES', 'Groceries', 63.4], ['SNEAKERS', 'Runners', 120], ['HEADPHONES', 'Headphones', 199], ['TAXI', 'Robotaxi ride', 18.5],
+    ['FLIGHT', 'Flight LIS → TYO', 640], ['COFFEE', 'Espresso', 3.2], ['CLOTHES', 'White shirt', 65], ['GROCERIES', 'Farmers market', 27]];
+  const CITY = ['TOKYO', 'LISBON', 'DUBAI', 'NEW YORK', 'BERLIN', 'SEOUL', 'LAGOS', 'MEXICO CITY', 'PARIS', 'SINGAPORE'];
+  const SHARE = 0.04;
+  function feed(ctx, t, t0, t1, o = {}) {
+    if (t < t0) return;
+    const dur = t1 - t0, tau = Math.max(0, t - t0), r0 = o.r0 ?? 1.6, r1 = o.r1 ?? 80, k = Math.log(r1 / r0) / dur;
+    const N = r0 * (Math.exp(k * tau) - 1) / k, rate = r0 * Math.exp(k * tau), n = Math.floor(N);
+    const item = i => { const it = ITEMS[Math.floor(hash(i * 7.31 + 1) * ITEMS.length)], price = it[2] * (0.85 + 0.3 * hash(i * 2.13 + 5));
+      return { cat: it[0], name: it[1], price, share: price * SHARE, city: CITY[Math.floor(hash(i * 3.7 + 2) * CITY.length)] }; };
+    const X = 110, Y = 150, Wd = 1060, rh = 58, rows = 12;
+    ctx.save();
+    ctx.fillStyle = 'rgba(10,12,14,0.9)'; ctx.fillRect(X - 20, Y - 40, Wd + 40, rows * rh + 110);
+    mono(ctx, 14, true); ctx.fillStyle = C.white; ctx.fillText('REVENUE SHARING · LIVE FEED', X, Y - 8);
+    ctx.fillStyle = C.clay; ctx.beginPath(); ctx.arc(X + Wd - 6, Y - 13, 5, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'; mono(ctx, 12, true); ctx.fillText('PURCHASE', X, Y + 26); ctx.fillText('PRICE', X + 700, Y + 26); ctx.fillText('SHARED BACK', X + 880, Y + 26);
+    ctx.fillRect(X, Y + 36, Wd, 1);
+    ctx.beginPath(); ctx.rect(X - 20, Y + 40, Wd + 40, rows * rh); ctx.clip();
+    const slide = (N - n) * rh, blur = clamp((rate - 12) / 50);
+    for (let r = -1; r < rows; r++) {
+      const i = n - r; if (i < 0) continue; const q = item(i), y = Y + 40 + r * rh + slide;
+      ctx.globalAlpha = (1 - r / (rows + 1)) * (1 - 0.55 * blur);
+      if (r === 0) { ctx.fillStyle = C.clay; ctx.fillRect(X - 20, y + 6, 5, rh - 12); }
+      KIN.font(ctx, 30, 'cond'); ctx.fillStyle = C.white; ctx.fillText(q.name.toUpperCase(), X, y + 40);
+      mono(ctx, 12, true); ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.fillText(`${q.cat} · ${q.city} · #${String(48213 + i).padStart(6, '0')}`, X + 330, y + 36);
+      KIN.font(ctx, 30, 'monom'); ctx.fillStyle = C.white; ctx.fillText(`$${RV.fmt(q.price, 2)}`, X + 700, y + 40);
+      ctx.fillStyle = C.clay; ctx.fillText(`+$${RV.fmt(q.share, 2)}`, X + 880, y + 40);
+    }
+    ctx.restore();
+    // right column: totals that run away as the feed accelerates
+    const avg = ITEMS.reduce((a, it) => a + it[2], 0) / ITEMS.length * SHARE, RX = 1250;
+    ctx.save(); ctx.fillStyle = 'rgba(241,239,233,0.94)'; ctx.fillRect(RX - 20, 110, 590, 830);
+    ctx.fillStyle = C.ink; mono(ctx, 13, true); ctx.fillText('SHARED BACK · THIS MINUTE', RX, 150); ctx.fillRect(RX, 162, 550, 1.5);
+    KIN.font(ctx, 118, 'cond'); ctx.fillText(`$${RV.fmt(N * avg, 2)}`, RX, 282);
+    mono(ctx, 13, true); ctx.fillText('PURCHASES', RX, 340); ctx.fillText('PER SECOND', RX + 280, 340);
+    KIN.font(ctx, 64, 'cond'); ctx.fillText(RV.fmt(n), RX, 408); ctx.fillStyle = C.clay; ctx.fillText(`${rate.toFixed(1)}`, RX + 280, 408);
+    // rate curve so far
+    ctx.fillStyle = C.ink; mono(ctx, 12, true); ctx.fillText('FIG. 6 · PURCHASES / SEC', RX, 460); ctx.fillRect(RX, 470, 550, 1);
+    ctx.strokeStyle = C.clay; ctx.lineWidth = 3; ctx.beginPath();
+    for (let j = 0; j <= 60; j++) { const tt = tau * j / 60, v = r0 * Math.exp(k * tt) / r1; const x = RX + 550 * (tt / dur), y = 650 - 160 * v; j ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+    ctx.stroke();
+    // where the shares come from: bars by category, growing with the count
+    ctx.fillStyle = C.ink; mono(ctx, 12, true); ctx.fillText('SHARED BY CATEGORY', RX, 700); ctx.fillRect(RX, 710, 550, 1);
+    const cats = ['RENT', 'NEW PHONE', 'FLIGHT', 'CLOTHES', 'GROCERIES', 'COFFEE', 'eSIM', 'INTERNET'];
+    cats.forEach((c, j) => { const it = ITEMS.filter(q => q[0] === c), val = it.reduce((a, q) => a + q[2], 0) * SHARE * N / ITEMS.length;
+      const w = Math.min(420, 420 * Math.log10(1 + val) / 4.2); const y = 735 + j * 24;
+      mono(ctx, 11, true); ctx.fillStyle = C.ink; ctx.fillText(c, RX, y + 12); ctx.fillStyle = j ? C.ink : C.clay; ctx.fillRect(RX + 120, y + 2, w, 12); });
+    ctx.restore();
+  }
+
+  return { feed, obj, box, swarm, lookCard, hit, mast, cover, subChip, fig, flapCard, iris, terminal, contact, pulse, scan, led, callout, stack, typed };
 })();

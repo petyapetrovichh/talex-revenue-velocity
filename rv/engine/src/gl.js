@@ -121,18 +121,28 @@ RV.GL = (() => {
     if (!masks.has(key)) masks.set(key, mk(await img(`assets/plates/${key}.mask.png`)));
     return masks.get(key);
   }
-  async function plate(key) {
-    if (cache.has(key)) { order = order.filter(k => k !== key); order.push(key); return cache.get(key); }
-    const [a, d] = await Promise.all([img(`assets/plates/${key}.jpg`), img(`assets/plates/${key}.depth.png`)]);
-    const p = { img: mk(a), dep: mk(d), asp: a.width / a.height };
-    cache.set(key, p); order.push(key);
-    while (order.length > MAXTEX) { const k = order.shift(), q = cache.get(k); gl.deleteTexture(q.img); gl.deleteTexture(q.dep); cache.delete(k); }
+  // video plates (generated clips, data/videos.json): one texture per frame, a flat depth map (no parallax or cut-out)
+  let flat = null;
+  function flatDepth() {
+    if (flat) return flat;
+    flat = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, flat);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([128, 128, 128, 255]));
+    return flat;
+  }
+  async function plate(key, fr = 0) {
+    const V = RV.VID && RV.VID[key], ck = V ? `${key}#${fr}` : key;
+    if (cache.has(ck)) { order = order.filter(k => k !== ck); order.push(ck); return cache.get(ck); }
+    let p;
+    if (V) { const a = await img(`assets/video/${key}/${String(fr).padStart(4, '0')}.jpg`); p = { img: mk(a), dep: flatDepth(), asp: a.width / a.height, video: true }; }
+    else { const [a, d] = await Promise.all([img(`assets/plates/${key}.jpg`), img(`assets/plates/${key}.depth.png`)]); p = { img: mk(a), dep: mk(d), asp: a.width / a.height }; }
+    cache.set(ck, p); order.push(ck);
+    while (order.length > MAXTEX) { const k = order.shift(), q = cache.get(k); gl.deleteTexture(q.img); if (!q.video) gl.deleteTexture(q.dep); cache.delete(k); }
     return p;
   }
   const hex = s => [1, 3, 5].map(i => parseInt(s.slice(i, i + 2), 16) / 255);
   // o: {zoom, x, y, rot, px, py, focus, mode, ht, cell, grain, vig, grade:[exp,con,sat,warm], tint, ink, mask, fade, flip, seed}
   async function draw(key, o = {}) {
-    const p = await plate(key), c = gl.canvas;
+    const p = await plate(key, o.vframe ?? 0), c = gl.canvas;
     gl.viewport(0, 0, c.width, c.height);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, p.img);

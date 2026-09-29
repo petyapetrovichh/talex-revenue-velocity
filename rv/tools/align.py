@@ -33,7 +33,8 @@ if not voc:
     voc = f"{root}/work/stems_take/htdemucs/{os.path.splitext(os.path.basename(a.song))[0]}/vocals.wav"
 bundle = torchaudio.pipelines.MMS_FA
 model, tokenizer, aligner = bundle.get_model(), bundle.get_tokenizer(), bundle.get_aligner()
-wav, vsr = torchaudio.load(voc); wav = torchaudio.functional.resample(wav.mean(0, keepdim=True), vsr, bundle.sample_rate)
+v, vsr = sf.read(voc, always_2d=True); wav = torch.tensor(v.mean(1), dtype=torch.float32)[None]
+wav = torchaudio.functional.resample(wav, vsr, bundle.sample_rate)
 norm = lambda s: re.sub(r"[^a-z' ]", ' ', s.lower()).replace("'", ' ').split()
 words, owner = [], []  # flat spoken words and (line, token index) they belong to
 for lid in ORDER:
@@ -50,10 +51,18 @@ for (lid, ti), sp in zip(owner, spans):
     L[ti] = (min(cur[0], t0), max(cur[1], t1)) if cur else (t0, t1)
 out_lines = []
 for lid in ORDER:
-    toks = [dict(w=tk[0], t0=round(lines[lid][i][0], 3), t1=round(lines[lid][i][1], 3)) for i, tk in enumerate(TOK[lid])]
+    L = lines[lid]
+    for i in range(len(TOK[lid])):  # punctuation-only tokens (e.g. a dash) take the previous word's end
+        if i not in L: p = L.get(i - 1) or L[min(k for k in L if k > i)]; L[i] = (p[1], p[1])
+    toks = [dict(w=tk[0], t0=round(L[i][0], 3), t1=round(L[i][1], 3)) for i, tk in enumerate(TOK[lid])]
     base = 'c5' if lid.startswith('c5') else lid
     sec = next(l['sec'] for l in LY if l['id'] == base)
     out_lines.append(dict(id=lid, sec=sec, kind='sung' if lid.startswith('c') else 'spoken', tokens=toks))
+
+# sanity: squeezed lines usually mean the words aren't in the vocal (or the take changed the lyric)
+for l in out_lines:
+    k = l['tokens']; span = k[-1]['t1'] - k[0]['t0']
+    if span < 0.12 * len(k): print(f"WARNING {l['id']}: {len(k)} words in {span:.2f}s — check this line by ear, fix times in the json if needed")
 
 # --- 3. storyboard warp -----------------------------------------------------------------------------
 dl = {l['id']: l['tokens'][0]['t0'] for l in draft['lines']}; nl = {l['id']: l['tokens'][0]['t0'] for l in out_lines}

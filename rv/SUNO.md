@@ -14,24 +14,26 @@ fashion show electroclash techno, 128 BPM, 4/4, dry analog kick, rolling acid ba
 rap, rock guitar, lo-fi, male lead vocal, mumbled vocals
 ```
 
-## Lyrics field (v2, Petr's lyrics; acronyms spelled for Suno; "walk" echoes added like the original)
+## Lyrics field (FINAL v3 — use SUNO-COVER.md for the Cover workflow)
 
 ```
-[Instrumental intro - 8 bars, building, no vocals]
+[Intro - instrumental]
 
 [Intro - spoken, deadpan female voice, room tone]
 Ladies. Gentlemen. Agents.
 This is not the future. Prepare to walk.
-(walk... walk... walk... walk...)
+(walk... walk... walk...)
 
 [Verse - spoken, deadpan]
 Look one. Everyone's chasing A G I,
-Musk says: universal income, don't ask why.
-Look two. Income doesn't have to wait for machines,
+Musk says: universal high income, don't ask why.
+Look two. Months ago, we asked the models what comes next,
+Chat G P T, Gemini, Claude, same answer, same text.
+Look three. Income doesn't have to wait for machines,
 It starts the moment a product shares what it means.
-Look three. Not subscriptions, not ads, just revenue in the split,
+Look four. Not subscriptions, not ads, just revenue in the split,
 Every purchase pays it forward, simple as that, legit.
-Look four. Take E SIM, stay connected wherever you roam,
+Look five. Take E SIM, stay connected wherever you roam,
 Every time someone signs up, you get paid back home.
 
 [Pre-Chorus - spoken, strings swell]
@@ -43,6 +45,7 @@ Feel the A G I, feel it coming fast
 Products that pay you back, built to last
 Not a promise from the future, it's already real
 Lock in, baby, revenue is the deal
+(It's so over?) WE'RE SO BACK!
 (It's so over?) WE'RE SO BACK!
 
 [Bridge - spoken, kick and strings only]

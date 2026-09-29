@@ -21,14 +21,16 @@ Text frames: the model must spell the text exactly; if a letter is wrong, regene
 - This is not the future. Prepare to walk. → **G03** (screen behind her)
 - walk · walk · walk · walk (cuts on each "walk") → A `hall-wide-1`, `hall-turn-3`, `hall-ms-2`, `n-P11-3`, `n-P28-2`
 
-**Verse**
+**Verse** (final lyrics: five looks)
 - Look one. Everyone's chasing A G I → A `n-P61-2` (crowd on the overpass, all facing the fog)
-- Musk says: universal income, don't ask why → **G04** billboard
-- Look two. Income doesn't have to wait for machines → **G05** freeway signs
+- Musk says: universal high income, don't ask why → **G04** billboard UNIVERSAL HIGH INCOME
+- Look two. Months ago, we asked the models what comes next → A `n-P18-2` (headset) + prompt box graphic
+- ChatGPT, Gemini, Claude — same answer, same text → A `ev-12-face/face-test-ms-f1-4` (three of her = three models, chat boxes) → A `ev-17-merge/two-of-her-2` ("same text" diff)
+- Look three. Income doesn't have to wait for machines → **E5** freeway signs
 - It starts the moment a product shares what it means → A `n-P15-2` (receipt printer) + split graphic
-- Look three. Not subscriptions, not ads, just revenue in the split → **G06** lit billboard
-- Every purchase pays it forward — simple as that, legit → **G07** orange woven label
-- Look four. Take eSIM, stay connected wherever you roam → **G08** departures board, **G09** eSIM card to lens
+- Look four. Not subscriptions, not ads, just revenue in the split → **E6** lit billboard
+- Every purchase pays it forward — simple as that, legit → **E7** orange woven label
+- Look five. Take eSIM, stay connected wherever you roam → **G08** departures board → **E9** eSIM card
 - Every time someone signs up, you get paid back home → A `ev-17-merge/veil-monitor-1` + notification graphic
 
 **Pre-chorus** → A `n-P64-4` (eye), `n-P56-2` (streak) — "Lock in." padlock graphic

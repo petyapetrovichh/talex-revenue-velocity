@@ -23,6 +23,7 @@ rap, rock guitar, lo-fi, male lead vocal, mumbled vocals, big room EDM, dubstep
 ```
 
 ## Lyrics (our text, laid out on the upload's sections)
+
 ```
 [Intro - instrumental]
 
@@ -33,12 +34,14 @@ This is not the future. Prepare to walk.
 
 [Verse - spoken, deadpan]
 Look one. Everyone's chasing A G I,
-Musk says: universal income, don't ask why.
-Look two. Income doesn't have to wait for machines,
+Musk says: universal high income, don't ask why.
+Look two. Months ago, we asked the models what comes next,
+Chat G P T, Gemini, Claude, same answer, same text.
+Look three. Income doesn't have to wait for machines,
 It starts the moment a product shares what it means.
-Look three. Not subscriptions, not ads, just revenue in the split,
+Look four. Not subscriptions, not ads, just revenue in the split,
 Every purchase pays it forward, simple as that, legit.
-Look four. Take E SIM, stay connected wherever you roam,
+Look five. Take E SIM, stay connected wherever you roam,
 Every time someone signs up, you get paid back home.
 
 [Pre-Chorus - spoken, strings swell]

@@ -25,7 +25,8 @@ PRICES = {'bytedance/seedance-2.5': {'480p': 854 * 480 * 24 / 1024 * 0.0000107, 
           'google/veo-3.1': {'720p': 0.20, '1080p': 0.20},  # without audio
           'heygen/avatar-iv': {'720p': 0.05, '1080p': 0.05},  # lip-sync: photo + our vocal
           'minimax/hailuo-3': {'2K': 0.13}}  # video-to-video: HeyGen lips in, natural head/hair/eyes out
-SHORT = {'bytedance/seedance-2.5': 'sd25', 'alibaba/wan-3.0': 'wan30', 'minimax/hailuo-3-max': 'h3max', 'google/veo-3.1': 'veo31', 'heygen/avatar-iv': 'heygen', 'minimax/hailuo-3': 'h3v2v'}
+A2V = False
+SHORT = {'bytedance/seedance-2.5': 'sd25', 'alibaba/wan-3.0': 'wan30', 'minimax/hailuo-3-max': 'h3max', 'google/veo-3.1': 'veo31', 'heygen/avatar-iv': 'heygen', 'minimax/hailuo-3': 'h3'}
 
 
 def spec():
@@ -73,6 +74,9 @@ def body(c, res, model):
     if model.startswith('heygen/'):  # talking/singing photo: the vocal window drives the mouth, its length the duration
         return {'model': model, 'prompt': c['prompt_lipsync'], 'resolution': res, 'aspect_ratio': '16:9',
                 'input_references': [img, {'type': 'audio_url', 'audio_url': {'url': RAW + c['id'] + '_words.mp3'}}]}  # words-only vocal
+    if model == 'minimax/hailuo-3' and c.get('prompt_a2v') and A2V:  # sing from the plate + our words-only vocal in one pass
+        return {'model': model, 'prompt': c['prompt_a2v'], 'duration': 5, 'resolution': res, 'aspect_ratio': '16:9',
+                'input_references': [img, {'type': 'audio_url', 'audio_url': {'url': RAW + c['id'] + '_words.mp3'}}]}
     if model == 'minimax/hailuo-3':  # rework the HeyGen take: its lip motion stays, the rest of the motion becomes natural
         return {'model': model, 'prompt': c['prompt_v2v'], 'duration': 5, 'resolution': res, 'aspect_ratio': '16:9',
                 'input_references': [{'type': 'video_url', 'video_url': {'url': RAW + c['id'] + '_heygen.mp4'}},
@@ -125,5 +129,5 @@ def cmd_status(a):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); sp = ap.add_subparsers(dest='cmd', required=True)
     sp.add_parser('prep'); sp.add_parser('status')
-    r = sp.add_parser('run'); r.add_argument('ids', nargs='+'); r.add_argument('--res', default='720p', choices=['480p', '720p', '768p', '1080p', '2K']); r.add_argument('--model', default=MODEL, choices=list(PRICES)); r.add_argument('--dry', action='store_true')
-    a = ap.parse_args(); {'prep': cmd_prep, 'run': cmd_run, 'status': cmd_status}[a.cmd](a)
+    r = sp.add_parser('run'); r.add_argument('ids', nargs='+'); r.add_argument('--res', default='720p', choices=['480p', '720p', '768p', '1080p', '2K']); r.add_argument('--model', default=MODEL, choices=list(PRICES)); r.add_argument('--a2v', action='store_true'); r.add_argument('--dry', action='store_true')
+    a = ap.parse_args(); A2V = getattr(a, 'a2v', False); {'prep': cmd_prep, 'run': cmd_run, 'status': cmd_status}[a.cmd](a)

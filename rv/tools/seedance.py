@@ -21,8 +21,9 @@ MODEL = 'bytedance/seedance-2.5'
 # $ per second of output (OpenRouter /api/v1/videos/models, 2026-09-29); Seedance bills video tokens = w*h*24*s/1024
 PRICES = {'bytedance/seedance-2.5': {'480p': 854 * 480 * 24 / 1024 * 0.0000107, '720p': 1280 * 720 * 24 / 1024 * 0.0000107},
           'alibaba/wan-3.0': {'480p': 0.05, '720p': 0.10, '1080p': 0.20},
-          'minimax/hailuo-3-max': {'480p': 0.05, '768p': 0.08}}
-SHORT = {'bytedance/seedance-2.5': 'sd25', 'alibaba/wan-3.0': 'wan30', 'minimax/hailuo-3-max': 'h3max'}
+          'minimax/hailuo-3-max': {'480p': 0.05, '768p': 0.08},
+          'google/veo-3.1': {'720p': 0.20, '1080p': 0.20}}  # without audio
+SHORT = {'bytedance/seedance-2.5': 'sd25', 'alibaba/wan-3.0': 'wan30', 'minimax/hailuo-3-max': 'h3max', 'google/veo-3.1': 'veo31'}
 
 
 def spec():
@@ -72,6 +73,8 @@ def body(c, res, model):
         b['frame_images'] = [dict(img, frame_type='first_frame')]; b['generate_audio'] = False
     else:  # reference mode: @Image1 + @Audio1 (an audio reference is ignored when frame_images is set)
         b['input_references'] = [img, {'type': 'audio_url', 'audio_url': {'url': RAW + c['id'] + '.mp3'}}]; b['generate_audio'] = True
+    if model.startswith('google/veo'):  # adult image-to-video of a fictional character
+        b['provider'] = {'options': {'google-vertex': {'parameters': {'personGeneration': 'allow_adult'}}}}
     return b
 
 

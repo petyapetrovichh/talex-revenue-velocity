@@ -71,7 +71,7 @@ def body(c, res, model):
     img = {'type': 'image_url', 'image_url': {'url': RAW + c['plate'] + '.jpg'}}
     if model.startswith('heygen/'):  # talking/singing photo: the vocal window drives the mouth, its length the duration
         return {'model': model, 'prompt': c['prompt_lipsync'], 'resolution': res, 'aspect_ratio': '16:9',
-                'input_references': [img, {'type': 'audio_url', 'audio_url': {'url': RAW + c['id'] + '.mp3'}}]}
+                'input_references': [img, {'type': 'audio_url', 'audio_url': {'url': RAW + c['id'] + '_words.mp3'}}]}  # words-only vocal
     b = {'model': model, 'prompt': c['prompt'], 'duration': c['dur'], 'resolution': res, 'aspect_ratio': '16:9'}
     if c['mode'] == 'frame':
         b['frame_images'] = [dict(img, frame_type='first_frame')]; b['generate_audio'] = False

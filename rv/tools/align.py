@@ -8,11 +8,11 @@
 # Writes engine/data/timeline.json (same format + storyBars + audio path for render.py).
 import argparse, json, os, re, subprocess, numpy as np
 root = os.path.dirname(os.path.abspath(__file__)) + '/..'
-ap = argparse.ArgumentParser(); ap.add_argument('song'); ap.add_argument('--vocals'); ap.add_argument('--out', default=root + '/engine/data/timeline.json')
+ap = argparse.ArgumentParser(); ap.add_argument('song'); ap.add_argument('--vocals'); ap.add_argument('--out', default=root + '/engine/data/timeline.json'); ap.add_argument('--draft', default=root + '/engine/data/timeline.json')
 a = ap.parse_args()
 
 import librosa, soundfile as sf, torch, torchaudio
-draft = json.load(open(a.out))
+draft = json.load(open(a.draft))
 if 'draft' in draft: draft = draft['draft']  # always warp from the original draft grid
 LY = json.load(open(root + '/data/lyrics.json'))['lines']
 ORDER = [l['id'] for l in LY if l['id'] != 'c5']

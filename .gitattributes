@@ -5,3 +5,5 @@
 
 # rv/gen/in: plain git so images can be uploaded through the GitHub web UI
 rv/gen/in/** !filter !diff !merge -text
+# rv/seedance/in: plain git so OpenRouter can fetch the inputs from raw.githubusercontent.com
+rv/seedance/in/** !filter !diff !merge -text

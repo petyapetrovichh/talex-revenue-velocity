@@ -7,35 +7,44 @@ ap = argparse.ArgumentParser(); ap.add_argument('--tag', default='a'); ap.add_ar
 ap.add_argument('--model', default='music_v2_5'); ap.add_argument('--dry', action='store_true')
 a = ap.parse_args()
 
-STYLE = ['fashion show electroclash techno', '128 BPM', '4/4', 'dry analog kick', 'rolling acid bassline',
-         'cold detuned synth stabs', 'sweeping orchestral strings on builds', 'catwalk energy',
-         'cold, luxurious, optimistic', 'clean modern mix']
-NO = ['rap', 'rock guitar', 'lo-fi', 'male lead vocal', 'mumbled vocals', 'big room EDM', 'dubstep']
-SPOKEN = ['deadpan female spoken-word vocal', 'close and dry', 'clipped and confident', 'every word crisp and intelligible']
-SUNG = ['euphoric sung female trance vocal', 'supersaw lift', 'big clear vowels']
+# v2: described from the original (analysis: F minor, 131.5-134 BPM, sparse Berlin-minimal arrangement)
+STYLE = ['fashion show electroclash techno', '132 BPM', '4/4', 'F minor', 'Berlin minimal austerity',
+         'dry analog 909 kick', 'rolling sixteenth-note acid 303 bassline', 'cold detuned minor synth stabs',
+         'sweeping orchestral strings only on builds', 'sparse arrangement with lots of space', 'catwalk energy',
+         'cold, luxurious, optimistic', 'clean modern mix', 'the same single young American female voice throughout']
+NO = ['rap', 'rock guitar', 'guitar', 'piano', 'lo-fi', 'male lead vocal', 'mumbled vocals', 'big room EDM', 'dubstep',
+      'risers', 'white noise sweeps', 'vocal chops', 'extra percussion', 'trailer hits', 'cinematic booms', 'autotune',
+      'reverb-drenched vocals', 'choir', 'saxophone', 'trap hi-hats']
+SPOKEN = ['deadpan female spoken-word vocal in a low register', 'close and dry, no reverb', 'clipped and confident',
+          'every word crisp and intelligible', 'rhythmic, on the beat, not sung']
+SUNG = ['euphoric sung female trance vocal', 'supersaw lift', 'big clear vowels', 'melody in F minor between A-flat 3 and A-flat 4']
 
 chunks = [
-    (10000, 'Prelude', ['instrumental only', 'building intro', 'kick enters on the last bar'], ['vocals', 'singing', 'speech'],
-     '{instrumental, no vocals}'),
-    (13000, 'Intro', SPOKEN + ['sparse beat, room tone'], [],
-     'Ladies. Gentlemen. Agents.\nThis is not the future. Prepare to walk.\n(walk... walk... walk... walk...) {echoing}'),
-    (44000, 'Verse', SPOKEN + ['full groove, four on the floor'], ['singing'],
+    (9000, 'Prelude', ['cold ambient pad and a distant filtered synth, no drums', 'one single kick hit near the end'],
+     ['vocals', 'singing', 'speech', 'drums'], '{instrumental, no vocals}'),
+    (9000, 'Intro', SPOKEN + ['pad only, the acid bass enters halfway', 'no drums yet', 'room tone'], ['drums'],
+     'Ladies. Gentlemen. Agents.\nThis is not the future. Prepare to walk.'),
+    (7000, 'Walk', ['the full kick drum and hats enter hard on the first beat', 'groove starts'], ['singing'],
+     'walk... walk... walk... walk... {whispered echo, repeating on each beat}'),
+    (44000, 'Verse', SPOKEN + ['full four-on-the-floor groove: kick, closed hats, acid bass, sparse stabs'], ['singing'],
      "Look one. Everyone's chasing A G I,\nMusk says: universal income, don't ask why.\n"
      "Look two. Income doesn't have to wait for machines,\nIt starts the moment a product shares what it means.\n"
      "Look three. Not subscriptions, not ads, just revenue in the split,\nEvery purchase pays it forward, simple as that, legit.\n"
      "Look four. Take E SIM, stay connected wherever you roam,\nEvery time someone signs up, you get paid back home."),
-    (9000, 'Pre-Chorus', SPOKEN + ['drums drop out', 'strings swell', 'tension'], ['singing'],
+    (8000, 'Pre-Chorus', SPOKEN + ['drums and bass drop out completely', 'only strings swelling', 'tension'], ['singing', 'drums'],
      "This isn't charity. It's the new default.\nLock in."),
-    (22000, 'Chorus', SUNG + ['full energy', 'four on the floor'], ['spoken word', 'rap'],
+    (22000, 'Chorus', SUNG + ['kick and acid bass return at full energy', 'crowd call-and-response shouts'], ['spoken word', 'rap'],
      "Feel the A G I, feel it coming fast\nProducts that pay you back, built to last\n"
-     "Not a promise from the future, it's already real\nLock in, baby, revenue is the deal\n(It's so over?) WE'RE SO BACK! {crowd shout}"),
-    (17000, 'Bridge', SPOKEN + ['kick and strings only', 'breakdown'], ['singing'],
+     "Not a promise from the future, it's already real\nLock in, baby, revenue is the deal\n"
+     "{melody: each line starts high on A-flat 4 and falls step by step to C 4, the last line climbs back to A-flat 4}\n"
+     "(It's so over?) WE'RE SO BACK! {stacked chanted shout}"),
+    (16000, 'Bridge', SPOKEN + ['kick and strings only', 'no bass', 'breakdown'], ['singing'],
      "Buy once, get paid on every sale behind you,\nWealth building while you sleep, ownership will find you.\n"
      "The more people join, the more the numbers grow,\nThat's the road to A G I, one product, then more."),
-    (22000, 'Final Chorus', SUNG + ['key change up', 'biggest energy', 'stacked vocals'], ['spoken word', 'rap'],
+    (22000, 'Final Chorus', SUNG + ['key change up one step', 'biggest energy', 'stacked vocals'], ['spoken word', 'rap'],
      "More products, more revenue, shared\nEveryone earning, this is the deal\n"
      "Feel the A G I, feel it coming fast\nThis is how the future gets built"),
-    (16000, 'Outro', SPOKEN + ['music falls away', 'ends on silence'], ['singing'],
+    (16000, 'Outro', SPOKEN + ['drums and bass fall away', 'only the cold pad remains', 'ends on silence'], ['singing', 'drums'],
      "Buy a product. Own a piece of what it earns,\nThat's not the future waiting, that's the wheel that turns."),
 ]
 plan = {'chunks': [{'text': f'[{name}]\n{txt}', 'duration_ms': d, 'positive_styles': STYLE + pos,

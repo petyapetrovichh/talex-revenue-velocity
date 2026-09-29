@@ -36,21 +36,17 @@
   }
  },
  "motion_pending": {
-  "RV-S07 taxi face": [
-   "wan30_720p",
-   "h3max_768p",
-   "veo31_1080p"
-  ],
-  "RV-S02 walk": [
-   "wan30_720p",
-   "h3max_768p",
-   "veo31_1080p"
-  ],
-  "RV-S08 taxi arrival": [
-   "h3max_480p (t2)"
-  ],
-  "RV-S06 twirl": [
-   "h3max_480p (t2)"
-  ]
+  "RV-S08 taxi arrival": "retake t3 (H3 2K, sharp audience) awaiting review",
+  "RV-S06 twirl": "retake t3 (H3 2K, full 360 with back view) awaiting review"
+ },
+ "motion": {
+  "RV-S07 taxi face": {
+   "file": "seedance/out/RV-S07_t1_h3max_768p.mp4",
+   "model": "MiniMax H3 Max"
+  },
+  "RV-S02 walk": {
+   "file": "seedance/out/RV-S02_t1_h3max_768p.mp4",
+   "model": "MiniMax H3 Max"
+  }
  }
 }

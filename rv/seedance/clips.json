@@ -81,9 +81,9 @@
    "plate": "twirl",
    "mode": "frame",
    "t0": 15.5,
-   "dur": 5,
+   "dur": 6,
    "audio": "mix",
-   "prompt": "Full-length shot. The woman from the first frame is caught mid-spin at the end of the walkway; she finishes turning on one heel, her pleated skirt flaring out and settling, her short black hair swinging and the tag on her belt flying out, and she stops facing the camera and stands still. Static camera. No cuts. Her mouth stays closed, face expressionless."
+   "prompt": "Full-length shot, static camera. The woman from the first frame spins on one heel through one full 360-degree turn at the end of the walkway, her pleated skirt flaring out. The turn is physically correct: she keeps turning to her left until her back faces the camera, and for a moment we see only her back: the back of her head and her black bob hair, the back of her white shirt and harness, the back of her skirt and the backs of her legs and boots; her face is not visible while her back is to the camera. She keeps turning in the same direction, her face comes back into view from the other side over her shoulder, and she stops facing the camera and stands still, her skirt settling and the tag on her belt swinging. Her body never flips or morphs: the face is always on the front of her head. No cuts. Her mouth stays closed, face expressionless."
   },
   {
    "id": "RV-S08",
@@ -92,7 +92,7 @@
    "t0": 5.0,
    "dur": 5,
    "audio": "mix",
-   "prompt": "The white robotaxi with its headlights on rolls slowly toward the camera down the wet concrete catwalk inside the dark data hall and stops; its rear door swings open. The silhouetted front row on both sides holds up glowing laptops. Fog drifts. Slow push in. No cuts."
+   "prompt": "The white robotaxi with its headlights on rolls slowly toward the camera down the wet concrete catwalk inside the dark data hall and stops; its rear door swings open. The audience sits in rows on both sides holding up glowing laptops; every person in the audience is sharp and in focus with clear, detailed, natural faces and hands, they stay almost still, only small natural movements, no motion blur, no smeared or distorted faces. Fog drifts low over the floor. Crisp focus across the whole frame, high detail. Slow push in. No cuts."
   },
   {
    "id": "RV-S09",

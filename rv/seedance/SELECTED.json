@@ -1,0 +1,56 @@
+{
+ "_note": "Takes approved by Petr for the final edit. song_t0 = song time of the clip's first frame (our track goes on top; model audio is discarded).",
+ "sung": {
+  "RV-S03": {
+   "line": "Feel the AGI, feel it coming fast",
+   "file": "seedance/out/RV-S03_t4_h3_2K.mp4",
+   "song_t0": 65.53,
+   "speed": 1.0,
+   "also": "reuse for f3 (117.4) if the vocal lines up"
+  },
+  "RV-S04": {
+   "line": "Lock in, baby - revenue is the deal",
+   "file": "seedance/out/RV-S04_t4_h3_2K.mp4",
+   "song_t0": 76.5,
+   "speed": 1.0
+  },
+  "RV-S05": {
+   "line": "Products that pay you back, built to last",
+   "file": "seedance/out/RV-S05_t3_h3_2K.mp4",
+   "song_t0": 68.85,
+   "speed": 1.0
+  },
+  "RV-S09": {
+   "line": "Everyone earning - this is the deal",
+   "file": "seedance/out/RV-S09_t1_h3_2K.mp4",
+   "song_t0": 114.0,
+   "speed": 1.0
+  },
+  "RV-S01": {
+   "line": "WE'RE SO BACK!",
+   "file": "seedance/fit/RV-S01_t6_warp_B.mp4",
+   "song_t0": 86.362,
+   "speed": "piecewise x1.7/x1.861/x1.315/x1.3 (already retimed, audio = our song)",
+   "source": "seedance/out/RV-S01_t6_h3_2K.mp4",
+   "also": "reuse for c5b (93.5) if the vocal lines up"
+  }
+ },
+ "motion_pending": {
+  "RV-S07 taxi face": [
+   "wan30_720p",
+   "h3max_768p",
+   "veo31_1080p"
+  ],
+  "RV-S02 walk": [
+   "wan30_720p",
+   "h3max_768p",
+   "veo31_1080p"
+  ],
+  "RV-S08 taxi arrival": [
+   "h3max_480p (t2)"
+  ],
+  "RV-S06 twirl": [
+   "h3max_480p (t2)"
+  ]
+ }
+}

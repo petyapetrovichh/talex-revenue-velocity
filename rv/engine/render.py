@@ -89,11 +89,21 @@ def cmd_video(a):
     t0 = a.frm or 0; t1 = a.to or dur
     f0, f1 = int(t0 * a.fps), int(t1 * a.fps)
     tmp = os.path.join(HERE, '..', 'work', 'segs'); os.makedirs(tmp, exist_ok=True)
-    for f in glob.glob(tmp + '/seg_*.mp4'): os.remove(f)
-    n = a.workers; step = (f1 - f0 + n * 4 - 1) // (n * 4)  # small chunks balance load
+    n = a.workers; step = (f1 - f0 + a.chunks - 1) // a.chunks  # small chunks balance load
     jobs = [(i, f, min(f + step, f1), a.fps, a.scale, tmp) for i, f in enumerate(range(f0, f1, step))]
+    def done(j):  # a finished segment from an interrupted run is kept (--resume)
+        f = f'{tmp}/seg_{j[0]:03d}.mp4'
+        if not os.path.exists(f): return False
+        r = subprocess.run(['ffprobe', '-v', 'error', '-count_frames', '-select_streams', 'v:0', '-show_entries', 'stream=nb_read_frames', '-of', 'csv=p=0', f], capture_output=True, text=True)
+        return r.stdout.strip() == str(j[2] - j[1])
+    if a.resume: keep = {j[0] for j in jobs if done(j)}
+    else:
+        keep = set()
+        for f in glob.glob(tmp + '/seg_*.mp4'): os.remove(f)
+    print(f'{len(keep)}/{len(jobs)} segments already rendered', flush=True)
     st = time.time()
-    with ProcessPoolExecutor(n) as ex: segs = list(ex.map(worker, jobs))
+    with ProcessPoolExecutor(n) as ex: list(ex.map(worker, [j for j in jobs if j[0] not in keep]))
+    segs = [f'{tmp}/seg_{j[0]:03d}.mp4' for j in jobs]
     import json
     audio = json.load(open(os.path.join(HERE, 'data', 'timeline.json'))).get('audio') or AUDIO
     lst = tmp + '/list.txt'; open(lst, 'w').write(''.join(f"file '{s}'\n" for s in segs))
@@ -107,6 +117,6 @@ if __name__ == '__main__':
     s = sp.add_parser('sheet'); s.add_argument('times', nargs='+'); s.add_argument('--cols', type=int, default=4); s.add_argument('--w', type=int, default=480); s.add_argument('--out', default='/tmp/sheet.jpg')
     sp.add_parser('lyrics')
     v = sp.add_parser('video'); v.add_argument('--scale', type=float, default=1); v.add_argument('--fps', type=int, default=30); v.add_argument('--workers', type=int, default=3)
-    v.add_argument('--out', default=os.path.join(HERE, '..', 'work', 'rv_draft.mp4')); v.add_argument('--from', dest='frm', type=float); v.add_argument('--to', type=float)
+    v.add_argument('--chunks', type=int, default=16); v.add_argument('--resume', action='store_true'); v.add_argument('--out', default=os.path.join(HERE, '..', 'work', 'rv_draft.mp4')); v.add_argument('--from', dest='frm', type=float); v.add_argument('--to', type=float)
     a = ap.parse_args()
     {'sheet': cmd_sheet, 'lyrics': cmd_lyrics, 'video': cmd_video}[a.cmd](a)

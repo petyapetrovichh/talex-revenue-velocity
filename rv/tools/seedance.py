@@ -18,16 +18,19 @@ VOC = os.path.join(RV, 'work', 'stems_final', 'htdemucs', 'suno-final', 'vocals.
 RAW = 'https://raw.githubusercontent.com/petyapetrovichh/talex-revenue-velocity/claude/adoring-galileo-69d1xl/rv/seedance/in/'
 API = 'https://openrouter.ai/api/v1/videos'
 MODEL = 'bytedance/seedance-2.5'
-PRICE = 0.0000107  # $ per video token (OpenRouter, 2026-09-29); tokens = w*h*24*s/1024
-SIZE = {'480p': (854, 480), '720p': (1280, 720)}
+# $ per second of output (OpenRouter /api/v1/videos/models, 2026-09-29); Seedance bills video tokens = w*h*24*s/1024
+PRICES = {'bytedance/seedance-2.5': {'480p': 854 * 480 * 24 / 1024 * 0.0000107, '720p': 1280 * 720 * 24 / 1024 * 0.0000107},
+          'alibaba/wan-3.0': {'480p': 0.05, '720p': 0.10, '1080p': 0.20},
+          'minimax/hailuo-3-max': {'480p': 0.05, '768p': 0.08}}
+SHORT = {'bytedance/seedance-2.5': 'sd25', 'alibaba/wan-3.0': 'wan30', 'minimax/hailuo-3-max': 'h3max'}
 
 
 def spec():
     return {c['id']: c for c in json.load(open(os.path.join(SD, 'clips.json')))['clips']}
 
 
-def est(res, dur):
-    w, h = SIZE[res]; return w * h * 24 * dur / 1024 * PRICE
+def est(model, res, dur):
+    return PRICES[model][res] * dur
 
 
 def req(url, data=None):
@@ -62,8 +65,8 @@ def log(row):
         w.writerow(row)
 
 
-def body(c, res):
-    b = {'model': MODEL, 'prompt': c['prompt'], 'duration': c['dur'], 'resolution': res, 'aspect_ratio': '16:9'}
+def body(c, res, model):
+    b = {'model': model, 'prompt': c['prompt'], 'duration': c['dur'], 'resolution': res, 'aspect_ratio': '16:9'}
     img = {'type': 'image_url', 'image_url': {'url': RAW + c['plate'] + '.jpg'}}
     if c['mode'] == 'frame':
         b['frame_images'] = [dict(img, frame_type='first_frame')]; b['generate_audio'] = False
@@ -72,10 +75,10 @@ def body(c, res):
     return b
 
 
-def run_one(c, res, dry):
+def run_one(c, res, dry, model):
     take = sum(1 for r in ledger_rows() if r['id'] == c['id']) + 1
-    b = body(c, res); e = est(res, c['dur'])
-    print(f"{c['id']} take {take}: {c['plate']} {c['mode']} {c['dur']}s {res} ≈ ${e:.2f}")
+    b = body(c, res, model); e = est(model, res, c['dur'])
+    print(f"{c['id']} take {take}: {c['plate']} {c['mode']} {c['dur']}s {model} {res} ≈ ${e:.2f}")
     if dry: print(json.dumps(b, indent=1)); return 0
     for u in [x['image_url']['url'] for x in b.get('frame_images', []) + b.get('input_references', []) if x['type'] == 'image_url'] + \
              [x['audio_url']['url'] for x in b.get('input_references', []) if x['type'] == 'audio_url']:
@@ -87,28 +90,28 @@ def run_one(c, res, dry):
     cost = (st.get('usage') or {}).get('cost', '')
     out = ''
     if st['status'] == 'completed':
-        os.makedirs(OUT, exist_ok=True); out = os.path.join(OUT, f"{c['id']}_t{take}_{res}.mp4")
+        os.makedirs(OUT, exist_ok=True); out = os.path.join(OUT, f"{c['id']}_t{take}_{SHORT[model]}_{res}.mp4")
         urllib.request.urlretrieve(f'{API}/{jid}/content?index=0', out); print('  saved', out, f'cost ${cost}')
     else: print('  ', json.dumps(st)[:800])
-    log({'id': c['id'], 'take': take, 'model': MODEL, 'res': res, 'seconds': c['dur'], 'est': f'{e:.2f}', 'cost': cost, 'job': jid,
+    log({'id': c['id'], 'take': take, 'model': model, 'res': res, 'seconds': c['dur'], 'est': f'{e:.2f}', 'cost': cost, 'job': jid,
          'status': st['status'], 'file': os.path.relpath(out, ROOT) if out else '', 'verdict': ''})
     return float(cost or 0)
 
 
 def cmd_run(a):
-    S = spec(); total = sum(est(a.res, S[i]['dur']) for i in a.ids)
+    S = spec(); total = sum(est(a.model, a.res, S[i]['dur']) for i in a.ids)
     print(f'{len(a.ids)} clips, estimate ${total:.2f}')
-    spent = sum(run_one(S[i], a.res, a.dry) for i in a.ids)
+    spent = sum(run_one(S[i], a.res, a.dry, a.model) for i in a.ids)
     if not a.dry: print(f'spent ${spent:.2f}')
 
 
 def cmd_status(a):
     R = ledger_rows(); print(f'{len(R)} submissions, ${sum(float(r["cost"] or 0) for r in R):.2f} spent')
-    for r in R: print(' ', r['id'], 't' + r['take'], r['res'], r['status'], '$' + (r['cost'] or '?'), r['file'], r['verdict'])
+    for r in R: print(' ', r['id'], 't' + r['take'], r['model'], r['res'], r['status'], '$' + (r['cost'] or '?'), r['file'], r['verdict'])
 
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); sp = ap.add_subparsers(dest='cmd', required=True)
     sp.add_parser('prep'); sp.add_parser('status')
-    r = sp.add_parser('run'); r.add_argument('ids', nargs='+'); r.add_argument('--res', default='720p', choices=list(SIZE)); r.add_argument('--dry', action='store_true')
+    r = sp.add_parser('run'); r.add_argument('ids', nargs='+'); r.add_argument('--res', default='720p', choices=['480p', '720p', '768p', '1080p']); r.add_argument('--model', default=MODEL, choices=list(PRICES)); r.add_argument('--dry', action='store_true')
     a = ap.parse_args(); {'prep': cmd_prep, 'run': cmd_run, 'status': cmd_status}[a.cmd](a)

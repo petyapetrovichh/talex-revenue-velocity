@@ -1,0 +1,5 @@
+id,take,model,res,seconds,est,cost,job,status,file,verdict
+RV-S07,1,minimax/hailuo-3-max,768p,6,0.48,0.48,gen-vid-1790705041-P1oornRfbs8jRIqGnCNQ,completed,rv/seedance/out/RV-S07_t1_h3max_768p.mp4,
+RV-S02,1,minimax/hailuo-3-max,768p,6,0.48,0.48,gen-vid-1790705060-9i7ZY61yTDYCyaMex9GE,completed,rv/seedance/out/RV-S02_t1_h3max_768p.mp4,
+RV-S07,1,alibaba/wan-3.0,720p,6,0.60,0.51,gen-vid-1790705022-NhkPj0opwnhEYs7MXnCd,completed,rv/seedance/out/RV-S07_t1_wan30_720p.mp4,
+RV-S02,2,alibaba/wan-3.0,720p,6,0.60,0.51,gen-vid-1790705151-yuFq2zuoKRH7Du0ZAAhe,completed,rv/seedance/out/RV-S02_t2_wan30_720p.mp4,

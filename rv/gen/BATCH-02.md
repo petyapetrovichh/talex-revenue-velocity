@@ -56,10 +56,12 @@ into the picture and redraw the set. So **every frame with text is an EDIT of th
 
 ### EDIT frames — attach only the listed plate, nothing else
 
-**E03 · "NOT THE FUTURE." on the screen** — attach `refs/comp-G03-screen.jpg`
-```
-Edit this image. On the large blank white screen behind the woman, display the words "NOT THE FUTURE." in giant bold black condensed sans-serif capitals, centred on the screen, lit like an LED screen. Her head stays in front of the screen and may hide part of the letters, like a real screen behind her. The screen shows only these words on white: no photos, no other text. Keep the woman, her face, pose and outfit, the audience, the fog, the light and the colours exactly unchanged.
-```
+**E03 · "This is not the future."** — NOT generated. Engine shot on the author's plate `ev-16-narr/n-P07-2`:
+the words appear on the screen one by one on their vocal time (like "THIS IS NOT AN AI BILLBOARD." in the original, 0:16),
+black on the screen, white where they cross her (depth cut-out), CV frame + label around the screen.
+
+Rule: text that appears **word by word in sync with the vocal** → engine, on a clean plate.
+Static in-world text (billboards, road signs, labels, cards) → baked into the picture by Nano Banana.
 
 **E04 · billboard UNIVERSAL HIGH INCOME** — done (`in/G04-billboard-uhi.jpg`).
 

@@ -233,10 +233,15 @@ RV.buildShots = () => {
       const te = W('f2', 'earning'), n = Math.max(0, Math.floor(RV.beatsSince(te, t) * 8));
       G.mono(ctx, 12, true); ctx.fillStyle = C.white; ctx.fillText(`EARNING · ${String(Math.min(48, n)).padStart(2, '0')} / 48`, 1480, 560);
       for (let i = 0; i < 48; i++) { const x = 1480 + (i % 8) * 40, y = 590 + Math.floor(i / 8) * 46; ctx.fillStyle = t > te && hash(i * 2.9) * 48 < n ? C.clay : 'rgba(255,255,255,0.28)'; ctx.beginPath(); ctx.arc(x + 10, y + 7, 7, 0, 7); ctx.fill(); ctx.fillRect(x + 1, y + 16, 18, 20); } } });
-  S(tw(T0('f3') - 0.06), tw(T0('f4') - 0.1), 'vAgi', { hold: true, vt: warp('vAgi', pairsOf('f3', 'c1')), look: LK.warm, cam: punch(cam({ z0: 1.03, z1: 1.07 }), 'vAgi', W('f3', 'feel', 3) - 0.04),
-    draw(ctx, t, m) { const v = inv(T0('f3'), T1('f3'), t);
-      G.gauge(ctx, 1640, 800, 150, 0.15 + 0.84 * RV.eio(v), { label: 'VELOCITY · KM/S', value: (0.3 + 11.2 * RV.eio(v)).toFixed(1) });
-      D.box(ctx, face(m), t, T0('f3'), { label: 'FACE · SINGING', conf: 0.98 }); } });
+  // final "Feel the AGI": the take plays at its own speed (no stretch, no stutter). On the second "feel" a flash cut
+  // restarts it on its own second "feel", so "feel it coming fast" lands on her lips again (Petr asked for the flash here).
+  const agiDraw = (ctx, t, m) => { const v = inv(T0('f3'), T1('f3'), t);
+    G.gauge(ctx, 1640, 800, 150, 0.15 + 0.84 * RV.eio(v), { label: 'VELOCITY · KM/S', value: (0.3 + 11.2 * RV.eio(v)).toFixed(1) });
+    D.box(ctx, face(m), t, T0('f3'), { label: 'FACE · SINGING', conf: 0.98 }); };
+  const feel2 = W('f3', 'feel', 3), c1feel2 = W('c1', 'feel', 3) - RV.VID.vAgi.song_t0;   // clip time of the take's own second "feel"
+  S(tw(T0('f3') - 0.06), tw(feel2 - 0.04), 'vAgi', { hold: true, vt0: T0('f3') - (T0('c1') - RV.VID.vAgi.song_t0), look: LK.warm, cam: cam({ z0: 1.03, z1: 1.07 }), draw: agiDraw });
+  S(tw(feel2 - 0.04), tw(T0('f4') - 0.1), 'vAgi', { hold: true, vt0: feel2 - c1feel2, tin: { type: 'flash', d: 0.14, ok: true }, look: LK.warm,
+    cam: punch(cam({ z0: 1.03, z1: 1.07 }), 'vAgi', 0), draw: agiDraw });
   S(tw(T0('f4') - 0.1), 69, 'vWalk', { hold: true, vt0: T0('f4') - 1.4, tin: { type: 'zoom', d: 0.3, box: [0.45, 0.3, 0.1, 0.1] }, look: LK.hall, cam: cam({ z0: 1.03, z1: 1.08 }),
     draw(ctx, t, m) { G.grid(ctx, t, { step: 60, color: `rgba(255,255,255,${0.05 + 0.1 * inv(T0('f4'), T1('f4'), t)})` });
       D.box(ctx, body(m), t, T0('f4'), { label: 'MODEL 01 · FINAL LOOK', conf: 0.99 }); } });
@@ -288,6 +293,6 @@ RV.buildShots = () => {
   shots.length = 0; shots.push(...recut);
   const NOFLASH = new Set(['flash', 'clayflash', 'strobe']);
   let prev = null; shots.forEach((s, i) => { const ty = s.tin && s.tin.type; if (ty && ty === prev) console.error(`repeat transition ${ty} at shot ${i}`);
-    if (ty && NOFLASH.has(ty)) console.error(`flash transition ${ty} at shot ${i}`); if (ty) prev = ty; });
+    if (ty && NOFLASH.has(ty) && !s.tin.ok) console.error(`flash transition ${ty} at shot ${i}`); if (ty) prev = ty; });
   return shots;
 };
